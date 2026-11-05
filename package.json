@@ -1,0 +1,39 @@
+{
+  "name": "new-folder",
+  "version": "1.0.0",
+  "description": "[![CI & App Test](https://github.com/Balasubramanian-pg/shiny-enigma/actions/workflows/ci.yml/badge.svg)](https://github.com/Balasubramanian-pg/shiny-enigma/actions/workflows/ci.yml) [![FastAPI](https://img.shields.io/badge/Backend-FastAPI-009688.svg)](https://fastapi.tiangolo.com/) [![Databricks Apps](https://img.shields.io/badge/Platform-Databricks%20Apps-FF3621.svg)](https://docs.databricks.com/en/dev-tools/databricks-apps/index.html) [![Unity Catalog](https://img.shields.io/badge/Storage-Unity%20Catalog%20%26%20Delta-00A4EF.svg)](https://www.databricks.com/product/unity-catalog)",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs",
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Balasubramanian-pg/shiny-enigma.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Balasubramanian-pg/shiny-enigma/issues"
+  },
+  "homepage": "https://github.com/Balasubramanian-pg/shiny-enigma#readme",
+  "dependencies": {
+    "clsx": "^2.1.1",
+    "lucide-react": "^1.69.0",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
+    "tailwind-merge": "^3.7.0"
+  },
+  "devDependencies": {
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "autoprefixer": "^10.6.2",
+    "postcss": "^8.5.32",
+    "tailwindcss": "^4.3.4",
+    "typescript": "^7.0.2"
+  }
+}

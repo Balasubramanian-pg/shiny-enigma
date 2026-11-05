@@ -26,6 +26,7 @@ templates = Jinja2Templates(directory=TEMPLATES_DIR)
 # -----------------------------------------------------------------------------
 DATA_CACHE: Dict[str, Any] = {
     "show": {},
+    "shows": [],
     "seasons": [],
     "episodes": [],
     "characters": [],
@@ -85,6 +86,7 @@ def load_data():
         with open(show_p, "r", encoding="utf-8") as f:
             reader = csv.DictReader(f)
             rows = list(reader)
+            DATA_CACHE["shows"] = rows
             DATA_CACHE["show"] = rows[0] if rows else {}
 
     # Cast numeric types for template formatting
@@ -383,7 +385,7 @@ async def awards_view(request: Request, tab: str = Query("all")):
 
 @app.get("/about", response_class=HTMLResponse)
 async def about_view(request: Request):
-    """Screen 7: Architecture, 5-Tier Databricks Stack & Live ER Diagram."""
+    """Screen 7: Architecture, 5-Tier Databricks Stack, Live DBML & Live Motion ER Diagram."""
     ctx = get_global_context("about")
     
     # Live row counts
@@ -396,7 +398,100 @@ async def about_view(request: Request):
         "awards": len(DATA_CACHE["awards"])
     }
 
-    ctx.update({"row_counts": row_counts})
+    # DBML Code Representation for interactive inspector
+    dbml_code = """// Database Markup Language (DBML)
+// The Mentalist Explorer - Unity Catalog Schema: main.tvshows
+
+Table shows {
+  show_id varchar [pk]
+  title varchar [not null]
+  network varchar
+  first_aired date
+  last_aired date
+  episode_count int
+  season_count int
+  peak_viewers_season int
+  peak_viewers_m double
+  highest_rated_episode_id varchar
+  highest_imdb_rating double
+}
+
+Table seasons {
+  season_no int [pk]
+  show_id varchar [ref: > shows.show_id]
+  year_start int
+  year_end int
+  episode_count int
+  avg_viewers_m double
+  avg_imdb_rating double
+  rank_us_shows int
+  top_rated_episode_id varchar [ref: > episodes.episode_id]
+}
+
+Table episodes {
+  episode_id varchar [pk]
+  show_id varchar [ref: > shows.show_id]
+  season_no int [ref: > seasons.season_no]
+  episode_no int
+  overall_no int
+  title varchar [not null]
+  air_date date
+  us_viewers_m double
+  imdb_rating double
+  imdb_votes int
+  directed_by varchar
+  written_by varchar
+}
+
+Table characters {
+  character_id varchar [pk]
+  show_id varchar [ref: > shows.show_id]
+  name varchar [not null]
+  actor varchar
+  household varchar
+  generation varchar
+  seasons_active varchar
+}
+
+Table season_cast {
+  season_cast_id varchar [pk]
+  character_id varchar [ref: > characters.character_id]
+  season_no int [ref: > seasons.season_no]
+  actor varchar
+  role_type varchar
+}
+
+Table awards {
+  award_id varchar [pk]
+  show_id varchar [ref: > shows.show_id]
+  episode_id varchar [ref: > episodes.episode_id]
+  year int
+  award_body varchar
+  category varchar
+  result varchar
+}
+
+// Relational Mappings
+Ref: shows.show_id < seasons.show_id
+Ref: shows.show_id < characters.show_id
+Ref: seasons.season_no < episodes.season_no
+Ref: characters.character_id < season_cast.character_id
+Ref: seasons.season_no < season_cast.season_no
+Ref: episodes.episode_id < awards.episode_id
+"""
+
+    ctx.update({
+        "row_counts": row_counts,
+        "dbml_code": dbml_code,
+        "system_status": {
+            "catalog": "main",
+            "schema": "tvshows",
+            "runtime": "Databricks Apps (Serverless Python 3.11)",
+            "warehouse": "Databricks Serverless SQL Warehouse",
+            "storage_layer": "Delta Lake 3.2.0 (Unity Catalog Managed)",
+            "volume_path": "/Volumes/main/tvshows/images"
+        }
+    })
     return templates.TemplateResponse("about.html", {"request": request, **ctx})
 
 @app.get("/contact", response_class=HTMLResponse)

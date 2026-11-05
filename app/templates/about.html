@@ -2,198 +2,264 @@
 
 {% block content %}
 <div style="margin-bottom: 2rem;">
-  <div style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0.25rem;">A personal analytical project</div>
-  <h1 style="font-size: 2.2rem; font-weight: 700; letter-spacing: -0.02em;">About</h1>
+  <div style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.25rem;">A personal analytical project</div>
+  <h1 style="font-size: 2.4rem; font-weight: 600; letter-spacing: -0.01em;">About</h1>
 </div>
 
 <!-- ABOUT NARRATIVE -->
 <div style="max-width: 850px; margin-bottom: 2.5rem;">
-  <h2 style="font-size: 1.35rem; font-weight: 700; margin-bottom: 0.75rem;">About this app</h2>
-  <p style="font-size: 0.95rem; color: var(--text-secondary); line-height: 1.6; margin-bottom: 1rem;">
+  <h2 style="font-size: 1.5rem; font-weight: 600; margin-bottom: 0.75rem;">About this app</h2>
+  <p style="font-size: 1rem; color: var(--text-secondary); line-height: 1.6; margin-bottom: 1rem;">
     The Mentalist Explorer covers all 151 episodes of the acclaimed CBS crime drama across 7 seasons, with detailed storylines, US viewership trends, IMDb ratings, character allegiances, and award history. It runs natively as a Databricks App querying Delta tables in Unity Catalog.
   </p>
 </div>
 
 <!-- HOW IT'S BUILT BANNER -->
-<h2 style="font-size: 1.35rem; font-weight: 700; margin-bottom: 1rem;">How it's built</h2>
+<h2 style="font-size: 1.5rem; font-weight: 600; margin-bottom: 1rem;">How it's built</h2>
 
 <div class="architecture-banner">
-  <div style="background-color: var(--accent-primary); width: 42px; height: 42px; border-radius: 3px; display: flex; align-items: center; justify-content: center;">
+  <div style="background-color: var(--accent-primary); width: 44px; height: 44px; border-radius: 4px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
     <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-      <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" stroke="#FFF" stroke-width="2"/>
+      <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" stroke="#FFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
     </svg>
   </div>
   <div>
-    <div style="font-size: 1.2rem; font-weight: 700;">Built on Databricks</div>
-    <div style="font-size: 0.82rem; opacity: 0.85;">Databricks Apps · Unity Catalog · Delta Lake · Serverless SQL Warehouse</div>
+    <div style="font-size: 1.3rem; font-weight: 600;">Built on Databricks</div>
+    <div style="font-size: 0.88rem; opacity: 0.85;">Databricks Apps · Unity Catalog · Delta Lake · Serverless SQL Warehouse</div>
   </div>
 </div>
 
-<p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1.5rem;">
+<p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1.5rem;">
   Data was loaded once from curated datasets into Unity Catalog. The app reads and caches it into memory when it boots.
 </p>
 
-<!-- 5-TIER ARCHITECTURE FLOW -->
+<!-- 5-TIER ARCHITECTURE FLOW (CLEAN SVG ICONS, NO EMOJIS) -->
 <div class="architecture-tiers-list">
+  <!-- TIER 1: BROWSER -->
   <div class="arch-tier-item">
-    <div class="tier-icon-box">🗂️</div>
+    <div class="tier-icon-box" title="Client Layer">
+      <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+      </svg>
+    </div>
     <div>
       <div class="tier-title">Browser</div>
       <div class="tier-sub">What you see</div>
     </div>
-    <div class="tier-content">6 pages · Chart tooltips · Dark/Light theme wipe</div>
+    <div class="tier-content">6 pages · Chart tooltips · Responsive Sidebar · Dark/Light theme wipe</div>
   </div>
 
+  <!-- TIER 2: APP -->
   <div class="arch-tier-item">
-    <div class="tier-icon-box">&lt;/&gt;</div>
+    <div class="tier-icon-box" title="Compute Layer">
+      <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+      </svg>
+    </div>
     <div>
       <div class="tier-title">App</div>
       <div class="tier-sub">Databricks Apps</div>
     </div>
-    <div class="tier-content">FastAPI · Jinja templates · Uvicorn ASGI</div>
+    <div class="tier-content">FastAPI (Python 3.11) · Jinja templates · Uvicorn ASGI Server</div>
   </div>
 
+  <!-- TIER 3: ACCESS -->
   <div class="arch-tier-item">
-    <div class="tier-icon-box">⇅</div>
+    <div class="tier-icon-box" title="Connectivity">
+      <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
+      </svg>
+    </div>
     <div>
       <div class="tier-title">Access</div>
       <div class="tier-sub">How the app reads it</div>
     </div>
-    <div class="tier-content">SQL warehouse connector · Unity Catalog Files API</div>
+    <div class="tier-content">Databricks Serverless SQL Warehouse · Unity Catalog Files API</div>
   </div>
 
+  <!-- TIER 4: STORAGE -->
   <div class="arch-tier-item">
-    <div class="tier-icon-box">🛢️</div>
+    <div class="tier-icon-box" title="Data & Lakehouse">
+      <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4" />
+      </svg>
+    </div>
     <div>
       <div class="tier-title">Storage</div>
       <div class="tier-sub">Unity Catalog</div>
     </div>
-    <div class="tier-content">6 Delta tables · Images volume</div>
+    <div class="tier-content">6 Delta tables (`main.tvshows.*`) · Images volume (`/Volumes/main/tvshows/images`)</div>
   </div>
 
+  <!-- TIER 5: SOURCES -->
   <div class="arch-tier-item">
-    <div class="tier-icon-box">📄</div>
+    <div class="tier-icon-box" title="Ingestion Source">
+      <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+      </svg>
+    </div>
     <div>
       <div class="tier-title">Sources</div>
       <div class="tier-sub">Where data came from</div>
     </div>
-    <div class="tier-content">Wikipedia · IMDb datasets (tt1196946) · Nielsen Ratings</div>
+    <div class="tier-content">Wikipedia (CC BY-SA) · IMDb datasets (tt1196946) · Nielsen Ratings</div>
   </div>
 </div>
 
-<div style="display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--text-muted); margin-bottom: 3rem;">
-  <span>↓ Request Flow</span>
-  <span>Data Return Flow ↑</span>
+<div style="display: flex; justify-content: space-between; font-size: 0.8rem; color: var(--text-muted); margin-bottom: 3rem;">
+  <span>↓ Request Flow (Browser to Unity Catalog)</span>
+  <span>Data Return Flow (Cached on Startup) ↑</span>
 </div>
 
-<!-- LIVE DATA MODEL (ER DIAGRAM) -->
-<h2 style="font-size: 1.35rem; font-weight: 700; margin-bottom: 0.5rem;">Data model</h2>
-<p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1.5rem;">
-  Six Delta tables in <code style="font-family: var(--font-mono); background: var(--bg-subtle); padding: 2px 6px; border-radius: 2px;">main.tvshows</code>. Row counts are read live when the app starts.
+<!-- DATA MODEL SECTION (LIVE MOTION GRAPH & DBML INSPECTOR) -->
+<div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 0.75rem;">
+  <h2 style="font-size: 1.5rem; font-weight: 600;">Data model &amp; schema architecture</h2>
+  <div class="model-view-switch">
+    <button id="toggleMotionView" class="view-toggle-btn active">Live Motion Graph</button>
+    <button id="toggleDbmlView" class="view-toggle-btn">DBML Specification</button>
+  </div>
+</div>
+
+<p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1.5rem;">
+  Six Delta tables in <code style="font-family: var(--font-mono); background: var(--bg-subtle); padding: 2px 6px; border-radius: 2px;">main.tvshows</code>. Hover over any node to highlight real-time relational wireflows.
 </p>
 
-<div class="er-diagram-container">
-  <!-- SHOWS -->
-  <div class="er-table-box">
-    <div class="er-table-header">
-      <span>shows</span>
-      <span class="er-row-count">{{ row_counts.shows }} row</span>
-    </div>
-    <div class="er-table-body">
-      <div class="er-field"><span class="er-pk">show_id (PK)</span><span>STRING</span></div>
-      <div class="er-field"><span>title</span><span>STRING</span></div>
-      <div class="er-field"><span>network</span><span>STRING</span></div>
-      <div class="er-field"><span>first_aired</span><span>DATE</span></div>
-      <div class="er-field"><span>episode_count</span><span>INT</span></div>
-      <div class="er-field" style="color: var(--text-muted);"><span>+ 14 more columns</span></div>
-    </div>
-  </div>
+<!-- 1. LIVE MOTION RELATIONAL GRAPH -->
+<div id="motionContainer" class="motion-diagram-container">
+  <!-- Animated SVG Connecting Wires -->
+  <svg class="motion-svg-overlay" xmlns="http://www.w3.org/2000/svg">
+    <!-- shows -> seasons wire -->
+    <path d="M 280 110 C 340 110, 360 110, 420 110" class="rel-wire" data-source="shows" data-target="seasons" />
+    
+    <!-- seasons -> episodes wire -->
+    <path d="M 680 110 C 740 110, 760 110, 820 110" class="rel-wire" data-source="seasons" data-target="episodes" />
+    
+    <!-- episodes -> awards wire -->
+    <path d="M 960 220 C 960 270, 960 300, 960 330" class="rel-wire" data-source="episodes" data-target="awards" />
 
-  <!-- SEASONS -->
-  <div class="er-table-box">
-    <div class="er-table-header">
-      <span>seasons</span>
-      <span class="er-row-count">{{ row_counts.seasons }} rows</span>
-    </div>
-    <div class="er-table-body">
-      <div class="er-field"><span class="er-pk">season_no (PK)</span><span>INT</span></div>
-      <div class="er-field"><span class="er-fk">show_id (FK)</span><span>STRING</span></div>
-      <div class="er-field"><span>avg_viewers_m</span><span>DOUBLE</span></div>
-      <div class="er-field"><span>avg_imdb_rating</span><span>DOUBLE</span></div>
-      <div class="er-field"><span class="er-fk">top_rated_episode_id (FK)</span><span>STRING</span></div>
-      <div class="er-field" style="color: var(--text-muted);"><span>+ 7 more columns</span></div>
-    </div>
-  </div>
+    <!-- shows -> characters wire -->
+    <path d="M 180 220 C 180 270, 180 300, 180 330" class="rel-wire" data-source="shows" data-target="characters" />
 
-  <!-- EPISODES -->
-  <div class="er-table-box">
-    <div class="er-table-header">
-      <span>episodes</span>
-      <span class="er-row-count">{{ row_counts.episodes }} rows</span>
-    </div>
-    <div class="er-table-body">
-      <div class="er-field"><span class="er-pk">episode_id (PK)</span><span>STRING</span></div>
-      <div class="er-field"><span class="er-fk">season_no (FK)</span><span>INT</span></div>
-      <div class="er-field"><span>title</span><span>STRING</span></div>
-      <div class="er-field"><span>air_date</span><span>DATE</span></div>
-      <div class="er-field"><span>us_viewers_m</span><span>DOUBLE</span></div>
-      <div class="er-field"><span>imdb_rating</span><span>DOUBLE</span></div>
-      <div class="er-field" style="color: var(--text-muted);"><span>+ 8 more columns</span></div>
-    </div>
-  </div>
+    <!-- characters -> season_cast wire -->
+    <path d="M 280 380 C 360 380, 400 380, 480 380" class="rel-wire" data-source="characters" data-target="season_cast" />
 
-  <!-- CHARACTERS -->
-  <div class="er-table-box">
-    <div class="er-table-header">
-      <span>characters</span>
-      <span class="er-row-count">{{ row_counts.characters }} rows</span>
-    </div>
-    <div class="er-table-body">
-      <div class="er-field"><span class="er-pk">character_id (PK)</span><span>STRING</span></div>
-      <div class="er-field"><span class="er-fk">show_id (FK)</span><span>STRING</span></div>
-      <div class="er-field"><span>name</span><span>STRING</span></div>
-      <div class="er-field"><span>actor</span><span>STRING</span></div>
-      <div class="er-field"><span>household</span><span>STRING</span></div>
-      <div class="er-field" style="color: var(--text-muted);"><span>+ 4 more columns</span></div>
-    </div>
-  </div>
+    <!-- seasons -> season_cast wire -->
+    <path d="M 550 220 C 550 270, 550 300, 550 330" class="rel-wire" data-source="seasons" data-target="season_cast" />
+  </svg>
 
-  <!-- SEASON_CAST -->
-  <div class="er-table-box">
-    <div class="er-table-header">
-      <span>season_cast</span>
-      <span class="er-row-count">{{ row_counts.season_cast }} rows</span>
+  <!-- Relational Nodes Grid -->
+  <div class="diagram-nodes-grid">
+    <!-- Node 1: SHOWS -->
+    <div class="model-node-card" data-table="shows">
+      <div class="node-header">
+        <span>shows</span>
+        <span class="node-rows-badge">{{ row_counts.shows }} row</span>
+      </div>
+      <div class="node-body">
+        <div class="node-row"><span class="node-pk">show_id (PK)</span><span>STRING</span></div>
+        <div class="node-row"><span>title</span><span>STRING</span></div>
+        <div class="node-row"><span>network</span><span>STRING</span></div>
+        <div class="node-row"><span>first_aired</span><span>DATE</span></div>
+        <div class="node-row"><span>episode_count</span><span>INT</span></div>
+        <div class="node-row" style="color: var(--text-muted);"><span>+ 14 more columns</span></div>
+      </div>
     </div>
-    <div class="er-table-body">
-      <div class="er-field"><span class="er-pk">season_cast_id (PK)</span><span>STRING</span></div>
-      <div class="er-field"><span class="er-fk">character_id (FK)</span><span>STRING</span></div>
-      <div class="er-field"><span class="er-fk">season_no (FK)</span><span>INT</span></div>
-      <div class="er-field"><span>actor</span><span>STRING</span></div>
-      <div class="er-field" style="color: var(--text-muted);"><span>+ 2 more columns</span></div>
-    </div>
-  </div>
 
-  <!-- AWARDS -->
-  <div class="er-table-box">
-    <div class="er-table-header">
-      <span>awards</span>
-      <span class="er-row-count">{{ row_counts.awards }} rows</span>
+    <!-- Node 2: SEASONS -->
+    <div class="model-node-card" data-table="seasons">
+      <div class="node-header">
+        <span>seasons</span>
+        <span class="node-rows-badge">{{ row_counts.seasons }} rows</span>
+      </div>
+      <div class="node-body">
+        <div class="node-row"><span class="node-pk">season_no (PK)</span><span>INT</span></div>
+        <div class="node-row"><span class="node-fk">show_id (FK)</span><span>STRING</span></div>
+        <div class="node-row"><span>avg_viewers_m</span><span>DOUBLE</span></div>
+        <div class="node-row"><span>avg_imdb_rating</span><span>DOUBLE</span></div>
+        <div class="node-row"><span class="node-fk">top_rated_ep_id</span><span>STRING</span></div>
+        <div class="node-row" style="color: var(--text-muted);"><span>+ 7 more columns</span></div>
+      </div>
     </div>
-    <div class="er-table-body">
-      <div class="er-field"><span class="er-pk">award_id (PK)</span><span>STRING</span></div>
-      <div class="er-field"><span class="er-fk">episode_id (FK)</span><span>STRING</span></div>
-      <div class="er-field"><span>year</span><span>INT</span></div>
-      <div class="er-field"><span>award_body</span><span>STRING</span></div>
-      <div class="er-field"><span>result</span><span>STRING</span></div>
-      <div class="er-field" style="color: var(--text-muted);"><span>+ 3 more columns</span></div>
+
+    <!-- Node 3: EPISODES -->
+    <div class="model-node-card" data-table="episodes">
+      <div class="node-header">
+        <span>episodes</span>
+        <span class="node-rows-badge">{{ row_counts.episodes }} rows</span>
+      </div>
+      <div class="node-body">
+        <div class="node-row"><span class="node-pk">episode_id (PK)</span><span>STRING</span></div>
+        <div class="node-row"><span class="node-fk">season_no (FK)</span><span>INT</span></div>
+        <div class="node-row"><span>title</span><span>STRING</span></div>
+        <div class="node-row"><span>air_date</span><span>DATE</span></div>
+        <div class="node-row"><span>us_viewers_m</span><span>DOUBLE</span></div>
+        <div class="node-row"><span>imdb_rating</span><span>DOUBLE</span></div>
+      </div>
+    </div>
+
+    <!-- Node 4: CHARACTERS -->
+    <div class="model-node-card" data-table="characters">
+      <div class="node-header">
+        <span>characters</span>
+        <span class="node-rows-badge">{{ row_counts.characters }} rows</span>
+      </div>
+      <div class="node-body">
+        <div class="node-row"><span class="node-pk">character_id (PK)</span><span>STRING</span></div>
+        <div class="node-row"><span class="node-fk">show_id (FK)</span><span>STRING</span></div>
+        <div class="node-row"><span>name</span><span>STRING</span></div>
+        <div class="node-row"><span>actor</span><span>STRING</span></div>
+        <div class="node-row"><span>household</span><span>STRING</span></div>
+        <div class="node-row" style="color: var(--text-muted);"><span>+ 4 more columns</span></div>
+      </div>
+    </div>
+
+    <!-- Node 5: SEASON_CAST -->
+    <div class="model-node-card" data-table="season_cast">
+      <div class="node-header">
+        <span>season_cast</span>
+        <span class="node-rows-badge">{{ row_counts.season_cast }} rows</span>
+      </div>
+      <div class="node-body">
+        <div class="node-row"><span class="node-pk">season_cast_id (PK)</span><span>STRING</span></div>
+        <div class="node-row"><span class="node-fk">character_id (FK)</span><span>STRING</span></div>
+        <div class="node-row"><span class="node-fk">season_no (FK)</span><span>INT</span></div>
+        <div class="node-row"><span>actor</span><span>STRING</span></div>
+        <div class="node-row"><span>role_type</span><span>STRING</span></div>
+      </div>
+    </div>
+
+    <!-- Node 6: AWARDS -->
+    <div class="model-node-card" data-table="awards">
+      <div class="node-header">
+        <span>awards</span>
+        <span class="node-rows-badge">{{ row_counts.awards }} rows</span>
+      </div>
+      <div class="node-body">
+        <div class="node-row"><span class="node-pk">award_id (PK)</span><span>STRING</span></div>
+        <div class="node-row"><span class="node-fk">episode_id (FK)</span><span>STRING</span></div>
+        <div class="node-row"><span>year</span><span>INT</span></div>
+        <div class="node-row"><span>award_body</span><span>STRING</span></div>
+        <div class="node-row"><span>result</span><span>STRING</span></div>
+      </div>
     </div>
   </div>
+</div>
+
+<!-- 2. DBML CODE INSPECTOR VIEW -->
+<div id="dbmlBlock" class="dbml-code-block">
+  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; border-bottom: 1px solid #242832; padding-bottom: 0.75rem;">
+    <span style="font-weight: 700; color: #FFFFFF;">The Mentalist DBML Specification</span>
+    <button id="copyDbmlBtn" class="btn-primary" style="padding: 0.4rem 0.8rem; font-size: 0.8rem;">
+      Copy DBML
+    </button>
+  </div>
+  <pre id="dbmlCodeContent"><code>{{ dbml_code }}</code></pre>
 </div>
 
 <!-- DATA SOURCES TABLE -->
-<h2 style="font-size: 1.35rem; font-weight: 700; margin-bottom: 1rem;">Data sources</h2>
+<h2 style="font-size: 1.5rem; font-weight: 600; margin-bottom: 1rem;">Data sources &amp; lineage</h2>
 
-<table style="width: 100%; border-collapse: collapse; background-color: var(--bg-surface); border: 1px solid var(--border-subtle); margin-bottom: 2rem;">
+<table style="width: 100%; border-collapse: collapse; background-color: var(--bg-surface); border: 1px solid var(--border-subtle); margin-bottom: 2rem; border-radius: 2px;">
   <tbody>
     <tr style="border-bottom: 1px solid var(--border-subtle);">
       <td style="padding: 1rem 1.25rem; font-weight: 600;">Episodes, seasons and awards</td>

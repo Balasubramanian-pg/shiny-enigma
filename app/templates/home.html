@@ -16,6 +16,7 @@
   </div>
 
   <div class="hero-visual">
+    <img src="/static/images/mentalist_banner.jpg" alt="The Mentalist Series Banner" class="hero-banner-img">
     <div class="cast-stage">
       <!-- Interactive Face Hover Tooltips -->
       <span class="cast-tag" style="top: 25%; left: 35%;">Patrick Jane</span>
@@ -24,10 +25,6 @@
       <span class="cast-tag" style="top: 45%; left: 75%;">Wayne Rigsby</span>
       <span class="cast-tag" style="top: 65%; left: 30%;">Grace Van Pelt</span>
       <span class="cast-tag" style="top: 65%; left: 60%; background-color: var(--accent-primary);">Red John</span>
-      
-      <div style="text-align: center; color: var(--text-muted); font-size: 0.9rem; font-style: italic;">
-        Hover over markers to inspect the California Bureau of Investigation (CBI) &amp; Red John
-      </div>
     </div>
   </div>
 </div>
@@ -85,9 +82,9 @@
   <!-- 151 Episodes Summary Card -->
   <a href="/episodes" class="season-summary-card">
     <div class="big-count">151</div>
-    <div style="font-size: 0.95rem; font-weight: 600;">
+    <div style="font-size: 1rem; font-weight: 600;">
       episodes<br>
-      <span style="font-size: 0.8rem; text-decoration: underline;">View all →</span>
+      <span style="font-size: 0.85rem; text-decoration: underline;">View all →</span>
     </div>
   </a>
 </div>
@@ -107,7 +104,7 @@
   {% endfor %}
 </div>
 
-<!-- CAST & CHARACTERS SHOWCASE -->
+<!-- CAST & CHARACTERS SHOWCASE (WITH REAL PORTRAITS) -->
 <div class="section-header">
   <h2 class="section-title">The Investigative Unit &amp; Foes</h2>
   <a href="/characters" class="section-link">All characters →</a>
@@ -117,7 +114,7 @@
   {% for c in characters[:8] %}
   <a href="/characters" class="character-card">
     <div class="char-img-box">
-      {{ c.name[0] }}
+      <img src="{{ c.image_url }}" alt="{{ c.name }}" class="char-img" onerror="this.src='/static/images/characters/patrick_jane.jpg';">
     </div>
     <div class="char-body">
       <div class="char-name">{{ c.name }}</div>

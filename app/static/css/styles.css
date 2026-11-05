@@ -1,7 +1,10 @@
 /* ==========================================================================
    THE MENTALIST EXPLORER - DESIGN SYSTEM & STYLESHEET
-   Swiss International Typographic Style with Red John Blood Red Accent
+   Typography: Afacad Semibold (Headings) & Afacad Normal Light (Body)
+   Aesthetics: Swiss Editorial + Red John Blood Red Signature + Live Motion
    ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Afacad:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&display=swap');
 
 :root {
   /* Light Palette (Warm Editorial Linen / Ivory) */
@@ -27,8 +30,9 @@
   --shadow-subtle: 0 1px 3px rgba(0, 0, 0, 0.04);
   --shadow-card: 0 4px 12px rgba(0, 0, 0, 0.05);
 
-  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  --font-serif: 'Didot', 'Bodoni MT', 'Playfair Display', Georgia, serif;
+  /* Typography: Afacad (Semibold headings, Normal Light body) */
+  --font-heading: 'Afacad', sans-serif;
+  --font-body: 'Afacad', sans-serif;
   --font-mono: ui-monospace, 'JetBrains Mono', 'SFMono-Regular', Menlo, monospace;
 }
 
@@ -67,7 +71,8 @@
 }
 
 body {
-  font-family: var(--font-sans);
+  font-family: var(--font-body);
+  font-weight: 400; /* Afacad Normal Light */
   background-color: var(--bg-canvas);
   color: var(--text-primary);
   line-height: 1.5;
@@ -75,20 +80,81 @@ body {
   min-height: 100vh;
 }
 
+h1, h2, h3, h4, h5, h6, 
+.hero-title, .section-title, .kpi-value, .brand-serif, 
+.stat-highlight-value, .compare-select, .tier-title {
+  font-family: var(--font-heading);
+  font-weight: 600; /* Afacad Semibold */
+  letter-spacing: -0.01em;
+}
+
 a {
   color: inherit;
   text-decoration: none;
 }
 
-/* App Shell Layout */
+/* --------------------------------------------------------------------------
+   TACTILE MOTIONS & USER SATISFACTION FEEDBACK
+   -------------------------------------------------------------------------- */
+button, .btn-primary, .btn-secondary, .season-card, .season-tab, .nav-item, .episode-row {
+  cursor: pointer;
+  user-select: none;
+}
+
+button:active, .btn-primary:active, .btn-secondary:active, .season-tab:active {
+  transform: scale(0.96) !important;
+  transition: transform 0.08s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.season-card:active {
+  transform: scale(0.98);
+}
+
+/* Floating Action Feedback Toast */
+.action-toast {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  background-color: var(--border-strong);
+  color: var(--bg-canvas);
+  padding: 0.75rem 1.25rem;
+  border-radius: 6px;
+  font-family: var(--font-heading);
+  font-size: 0.95rem;
+  font-weight: 600;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  transform: translateY(100px);
+  opacity: 0;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  pointer-events: none;
+}
+
+.action-toast.show {
+  transform: translateY(0);
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.toast-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: var(--accent-primary);
+  box-shadow: 0 0 8px var(--accent-primary);
+}
+
+/* --------------------------------------------------------------------------
+   APP LAYOUT & SIDEBAR NAVIGATION
+   -------------------------------------------------------------------------- */
 .app-layout {
   display: flex;
   min-height: 100vh;
 }
 
-/* --------------------------------------------------------------------------
-   SIDEBAR NAVIGATION
-   -------------------------------------------------------------------------- */
 .sidebar {
   width: 140px;
   background-color: var(--sidebar-bg);
@@ -116,6 +182,9 @@ a {
   color: var(--text-muted);
   font-size: 0.9rem;
   padding: 0.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .sidebar-nav {
@@ -130,7 +199,8 @@ a {
   gap: 0.6rem;
   padding: 0.6rem 0.75rem;
   border-radius: 4px;
-  font-size: 0.85rem;
+  font-size: 0.95rem;
+  font-family: var(--font-heading);
   font-weight: 500;
   color: var(--text-secondary);
 }
@@ -151,10 +221,11 @@ a {
   width: 16px;
   height: 16px;
   stroke-width: 2;
+  flex-shrink: 0;
 }
 
 .sidebar-footer {
-  font-size: 0.68rem;
+  font-size: 0.72rem;
   color: var(--text-muted);
   line-height: 1.3;
   padding: 0.5rem;
@@ -166,7 +237,7 @@ a {
 }
 
 /* --------------------------------------------------------------------------
-   MAIN CONTENT AREA & TOP BAR
+   TOP HEADER BAR
    -------------------------------------------------------------------------- */
 .main-wrapper {
   flex: 1;
@@ -199,7 +270,8 @@ a {
   background-color: var(--bg-subtle);
   border: 1px solid transparent;
   padding: 0.55rem 0.9rem;
-  font-size: 0.85rem;
+  font-family: var(--font-body);
+  font-size: 0.9rem;
   color: var(--text-primary);
   border-radius: 2px 0 0 2px;
   outline: none;
@@ -215,7 +287,8 @@ a {
   color: var(--bg-canvas);
   border: none;
   padding: 0.55rem 1.1rem;
-  font-size: 0.82rem;
+  font-family: var(--font-heading);
+  font-size: 0.9rem;
   font-weight: 600;
   border-radius: 0 2px 2px 0;
   cursor: pointer;
@@ -240,6 +313,11 @@ a {
   color: var(--text-primary);
 }
 
+.theme-toggle-btn svg {
+  width: 18px;
+  height: 18px;
+}
+
 .brand-logo {
   display: flex;
   align-items: baseline;
@@ -250,7 +328,8 @@ a {
 }
 
 .brand-sans {
-  font-weight: 300;
+  font-family: var(--font-heading);
+  font-weight: 500;
   letter-spacing: 0.12em;
   font-size: 0.85rem;
   text-transform: uppercase;
@@ -258,10 +337,10 @@ a {
 }
 
 .brand-serif {
-  font-family: var(--font-serif);
+  font-family: var(--font-heading);
   font-weight: 700;
   font-style: italic;
-  font-size: 1.45rem;
+  font-size: 1.55rem;
   color: var(--accent-primary);
 }
 
@@ -273,7 +352,7 @@ a {
 }
 
 /* --------------------------------------------------------------------------
-   HERO & BENTO METRIC CARDS
+   HERO SECTION & REAL PICTURE INTEGRATION
    -------------------------------------------------------------------------- */
 .hero-card {
   display: grid;
@@ -288,8 +367,9 @@ a {
 }
 
 .hero-eyebrow {
-  font-size: 0.75rem;
-  font-weight: 700;
+  font-family: var(--font-heading);
+  font-size: 0.8rem;
+  font-weight: 600;
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--accent-primary);
@@ -297,15 +377,13 @@ a {
 }
 
 .hero-title {
-  font-size: 2.4rem;
-  font-weight: 700;
+  font-size: 2.6rem;
   line-height: 1.15;
-  letter-spacing: -0.02em;
   margin-bottom: 1rem;
 }
 
 .hero-desc {
-  font-size: 0.95rem;
+  font-size: 1rem;
   color: var(--text-secondary);
   line-height: 1.6;
   margin-bottom: 1.8rem;
@@ -321,11 +399,13 @@ a {
   background-color: var(--accent-primary);
   color: #FFFFFF;
   padding: 0.7rem 1.4rem;
-  font-size: 0.85rem;
+  font-family: var(--font-heading);
+  font-size: 0.95rem;
   font-weight: 600;
   border-radius: 2px;
   display: inline-block;
   cursor: pointer;
+  box-shadow: 0 2px 8px rgba(200, 16, 46, 0.25);
 }
 
 .btn-primary:hover {
@@ -336,7 +416,8 @@ a {
   background-color: #111111;
   color: #FFFFFF;
   padding: 0.7rem 1.4rem;
-  font-size: 0.85rem;
+  font-family: var(--font-heading);
+  font-size: 0.95rem;
   font-weight: 600;
   border-radius: 2px;
   display: inline-block;
@@ -347,23 +428,31 @@ a {
   background-color: #262626;
 }
 
-/* Interactive Cast Visual in Hero */
+/* Hero Picture Visual with Interactive Face Badges */
 .hero-visual {
   position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   border: 1px solid var(--border-subtle);
-  background: linear-gradient(135deg, rgba(200, 16, 46, 0.05), rgba(18, 19, 22, 0.05));
-  min-height: 280px;
+  min-height: 300px;
   overflow: hidden;
+  border-radius: 2px;
+  background-color: #0E1013;
+}
+
+.hero-banner-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  transition: transform 0.6s ease;
+}
+
+.hero-visual:hover .hero-banner-img {
+  transform: scale(1.03);
 }
 
 .cast-stage {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  min-height: 280px;
+  position: absolute;
+  inset: 0;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -373,18 +462,21 @@ a {
   position: absolute;
   background-color: rgba(18, 19, 22, 0.9);
   color: #FFFFFF;
-  padding: 0.25rem 0.55rem;
-  font-size: 0.72rem;
+  padding: 0.3rem 0.65rem;
+  font-family: var(--font-heading);
+  font-size: 0.82rem;
   font-weight: 600;
   border-radius: 2px;
   cursor: pointer;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
   transition: transform 0.15s ease, background-color 0.15s ease;
+  border: 1px solid rgba(255, 255, 255, 0.15);
 }
 
 .cast-tag:hover {
   background-color: var(--accent-primary);
-  transform: scale(1.08);
+  transform: scale(1.1);
+  border-color: var(--accent-primary);
 }
 
 /* 4-KPI Metric Bento Bar */
@@ -399,25 +491,29 @@ a {
   background-color: var(--bg-subtle);
   border: 1px solid var(--border-subtle);
   padding: 1.5rem 1.25rem;
+  border-radius: 2px;
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.kpi-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--accent-primary);
 }
 
 .kpi-value {
-  font-size: 2.2rem;
-  font-weight: 700;
-  letter-spacing: -0.03em;
-  color: var(--text-primary);
+  font-size: 2.6rem;
   line-height: 1;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.4rem;
 }
 
 .kpi-label {
-  font-size: 0.78rem;
+  font-size: 0.85rem;
   color: var(--text-secondary);
   line-height: 1.3;
 }
 
 /* --------------------------------------------------------------------------
-   SEASONS MATRIX & FLIP/SPARKLINE CARDS
+   SEASONS MATRIX & SPARKLINE CARDS
    -------------------------------------------------------------------------- */
 .section-header {
   display: flex;
@@ -427,13 +523,12 @@ a {
 }
 
 .section-title {
-  font-size: 1.4rem;
-  font-weight: 700;
-  letter-spacing: -0.02em;
+  font-size: 1.6rem;
 }
 
 .section-link {
-  font-size: 0.82rem;
+  font-family: var(--font-heading);
+  font-size: 0.9rem;
   font-weight: 600;
   color: var(--accent-primary);
 }
@@ -449,7 +544,7 @@ a {
   background-color: #121316;
   color: #FFFFFF;
   padding: 1.2rem;
-  min-height: 155px;
+  min-height: 160px;
   position: relative;
   display: flex;
   flex-direction: column;
@@ -457,12 +552,20 @@ a {
   border-radius: 2px;
   cursor: pointer;
   overflow: hidden;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+  border: 1px solid transparent;
+}
+
+.season-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35);
+  border-color: var(--accent-primary);
 }
 
 .season-card-num {
-  font-size: 1.8rem;
+  font-family: var(--font-heading);
+  font-size: 2rem;
   font-weight: 700;
-  letter-spacing: -0.02em;
   line-height: 1;
 }
 
@@ -470,7 +573,7 @@ a {
   display: flex;
   align-items: flex-end;
   gap: 2px;
-  height: 32px;
+  height: 34px;
   margin: 0.75rem 0;
 }
 
@@ -481,21 +584,20 @@ a {
 }
 
 .season-card-meta {
-  font-size: 0.72rem;
+  font-size: 0.8rem;
   color: #A0A4AE;
   display: flex;
   justify-content: space-between;
 }
 
-/* Hover flip / synopsis reveal */
 .season-synopsis-overlay {
   position: absolute;
   inset: 0;
   background-color: #121316;
   color: #E2E4E9;
   padding: 1.1rem;
-  font-size: 0.78rem;
-  line-height: 1.45;
+  font-size: 0.82rem;
+  line-height: 1.5;
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.2s ease;
@@ -516,10 +618,16 @@ a {
   flex-direction: column;
   justify-content: space-between;
   border-radius: 2px;
+  transition: transform 0.2s ease;
+}
+
+.season-summary-card:hover {
+  transform: translateY(-3px);
 }
 
 .season-summary-card .big-count {
-  font-size: 2.4rem;
+  font-family: var(--font-heading);
+  font-size: 2.8rem;
   font-weight: 700;
 }
 
@@ -537,11 +645,18 @@ a {
   background-color: var(--bg-surface);
   border: 1px solid var(--border-subtle);
   padding: 1.1rem;
+  border-radius: 2px;
+  transition: border-color 0.2s ease;
+}
+
+.milestone-item:hover {
+  border-color: var(--accent-primary);
 }
 
 .milestone-label {
-  font-size: 0.7rem;
-  font-weight: 700;
+  font-family: var(--font-heading);
+  font-size: 0.75rem;
+  font-weight: 600;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--accent-primary);
@@ -549,14 +664,106 @@ a {
 }
 
 .milestone-title {
-  font-size: 1rem;
-  font-weight: 700;
+  font-family: var(--font-heading);
+  font-size: 1.15rem;
+  font-weight: 600;
   margin-bottom: 0.25rem;
 }
 
 .milestone-sub {
-  font-size: 0.75rem;
+  font-size: 0.82rem;
   color: var(--text-muted);
+}
+
+/* --------------------------------------------------------------------------
+   CHARACTER PHOTO CARDS
+   -------------------------------------------------------------------------- */
+.household-block {
+  margin-bottom: 3rem;
+}
+
+.household-title {
+  font-size: 1.45rem;
+  margin-bottom: 1.25rem;
+  border-bottom: 2px solid var(--border-strong);
+  padding-bottom: 0.4rem;
+}
+
+.characters-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 1.5rem;
+}
+
+.character-card {
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  overflow: hidden;
+  border-radius: 2px;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.character-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-card);
+  border-color: var(--accent-primary);
+}
+
+.char-img-box {
+  width: 100%;
+  height: 240px;
+  background-color: var(--bg-subtle);
+  overflow: hidden;
+  position: relative;
+}
+
+.char-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top;
+  transition: transform 0.5s ease;
+}
+
+.character-card:hover .char-img {
+  transform: scale(1.05);
+}
+
+.char-body {
+  padding: 1.25rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.char-name {
+  font-family: var(--font-heading);
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 0.2rem;
+}
+
+.char-actor {
+  font-size: 0.88rem;
+  color: var(--text-muted);
+  margin-bottom: 0.5rem;
+}
+
+.char-seasons {
+  font-family: var(--font-heading);
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--accent-primary);
+  margin-bottom: 0.75rem;
+}
+
+.char-bio {
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  margin-top: auto;
 }
 
 /* --------------------------------------------------------------------------
@@ -573,7 +780,8 @@ a {
 
 .season-tab {
   padding: 0.55rem 1rem;
-  font-size: 0.82rem;
+  font-family: var(--font-heading);
+  font-size: 0.95rem;
   font-weight: 600;
   background-color: var(--bg-subtle);
   color: var(--text-secondary);
@@ -600,7 +808,6 @@ a {
 
 .episode-row {
   border-bottom: 1px solid var(--border-subtle);
-  cursor: pointer;
 }
 
 .episode-row:hover {
@@ -609,8 +816,9 @@ a {
 
 .episode-cell-num {
   width: 45px;
-  font-weight: 700;
-  font-size: 0.88rem;
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 1rem;
   color: var(--text-secondary);
   padding: 0.9rem 0.5rem;
 }
@@ -620,12 +828,13 @@ a {
 }
 
 .ep-title {
+  font-family: var(--font-heading);
   font-weight: 600;
-  font-size: 0.92rem;
+  font-size: 1.05rem;
 }
 
 .ep-date {
-  font-size: 0.75rem;
+  font-size: 0.8rem;
   color: var(--text-muted);
 }
 
@@ -649,7 +858,7 @@ a {
 .episode-cell-metrics {
   text-align: right;
   padding: 0.9rem 0.5rem;
-  font-size: 0.85rem;
+  font-size: 0.92rem;
 }
 
 /* Analytics Rail */
@@ -663,16 +872,16 @@ a {
   background-color: var(--bg-surface);
   border: 1px solid var(--border-subtle);
   padding: 1.5rem;
+  border-radius: 2px;
 }
 
 .chart-title {
-  font-size: 0.95rem;
-  font-weight: 700;
+  font-size: 1.1rem;
   margin-bottom: 0.25rem;
 }
 
 .chart-subtitle {
-  font-size: 0.75rem;
+  font-size: 0.8rem;
   color: var(--text-muted);
   margin-bottom: 1.25rem;
 }
@@ -693,11 +902,12 @@ a {
   border-radius: 2px 2px 0 0;
   cursor: pointer;
   position: relative;
-  transition: background-color 0.15s ease;
+  transition: background-color 0.15s ease, transform 0.15s ease;
 }
 
 .chart-col:hover {
   background-color: var(--text-secondary);
+  transform: scaleY(1.05);
 }
 
 .chart-col.top-rated,
@@ -706,11 +916,10 @@ a {
 }
 
 .lava-caption {
-  font-size: 0.72rem;
+  font-size: 0.78rem;
   color: var(--text-muted);
 }
 
-/* Stat Box */
 .stat-highlight-box {
   background-color: var(--accent-primary);
   color: #FFFFFF;
@@ -719,18 +928,17 @@ a {
 }
 
 .stat-highlight-value {
-  font-size: 2.2rem;
-  font-weight: 700;
+  font-size: 2.6rem;
   margin-bottom: 0.25rem;
 }
 
 .stat-highlight-desc {
-  font-size: 0.82rem;
+  font-size: 0.9rem;
   opacity: 0.9;
 }
 
 /* --------------------------------------------------------------------------
-   HEAD-TO-HEAD COMPARISON MATRIX
+   HEAD-TO-HEAD COMPARISON
    -------------------------------------------------------------------------- */
 .compare-header-selectors {
   display: grid;
@@ -746,14 +954,14 @@ a {
   background-color: var(--bg-surface);
   border: 1px solid var(--border-subtle);
   color: var(--text-primary);
-  font-size: 0.9rem;
-  font-weight: 600;
+  font-size: 1rem;
   border-radius: 2px;
   outline: none;
 }
 
 .vs-badge {
-  font-size: 0.85rem;
+  font-family: var(--font-heading);
+  font-size: 0.95rem;
   font-weight: 700;
   color: var(--text-muted);
 }
@@ -792,7 +1000,7 @@ a {
 
 .scorecard-cell {
   padding: 1rem 1.5rem;
-  font-size: 0.95rem;
+  font-size: 1.05rem;
 }
 
 .scorecard-cell.val-left {
@@ -804,7 +1012,8 @@ a {
 .scorecard-cell.metric-center {
   text-align: center;
   width: 30%;
-  font-size: 0.82rem;
+  font-family: var(--font-heading);
+  font-size: 0.9rem;
   text-transform: uppercase;
   color: var(--text-muted);
   letter-spacing: 0.05em;
@@ -822,77 +1031,7 @@ a {
 }
 
 /* --------------------------------------------------------------------------
-   CHARACTERS HIERARCHY / FAMILY TREE
-   -------------------------------------------------------------------------- */
-.household-block {
-  margin-bottom: 3rem;
-}
-
-.household-title {
-  font-size: 1.25rem;
-  font-weight: 700;
-  margin-bottom: 1.25rem;
-  border-bottom: 2px solid var(--border-strong);
-  padding-bottom: 0.4rem;
-}
-
-.characters-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-  gap: 1.5rem;
-}
-
-.character-card {
-  background-color: var(--bg-surface);
-  border: 1px solid var(--border-subtle);
-  overflow: hidden;
-  border-radius: 2px;
-}
-
-.char-img-box {
-  width: 100%;
-  height: 220px;
-  background: linear-gradient(135deg, var(--bg-subtle), var(--bg-elevated));
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 2.5rem;
-  font-family: var(--font-serif);
-  color: var(--text-muted);
-  position: relative;
-}
-
-.char-body {
-  padding: 1.25rem;
-}
-
-.char-name {
-  font-size: 1.1rem;
-  font-weight: 700;
-  margin-bottom: 0.2rem;
-}
-
-.char-actor {
-  font-size: 0.82rem;
-  color: var(--text-muted);
-  margin-bottom: 0.5rem;
-}
-
-.char-seasons {
-  font-size: 0.75rem;
-  font-weight: 600;
-  color: var(--accent-primary);
-  margin-bottom: 0.75rem;
-}
-
-.char-bio {
-  font-size: 0.78rem;
-  color: var(--text-secondary);
-  line-height: 1.5;
-}
-
-/* --------------------------------------------------------------------------
-   ABOUT SCREEN & ER DIAGRAM
+   ABOUT SCREEN, ARCHITECTURE & LIVE MOTION DBML DIAGRAM
    -------------------------------------------------------------------------- */
 .architecture-banner {
   background-color: #121316;
@@ -919,6 +1058,7 @@ a {
   padding: 1rem 1.5rem;
   background-color: var(--bg-subtle);
   border: 1px solid var(--border-subtle);
+  border-radius: 2px;
 }
 
 .tier-icon-box {
@@ -932,76 +1072,183 @@ a {
   border-radius: 2px;
 }
 
+.tier-icon-box svg {
+  width: 20px;
+  height: 20px;
+  stroke: #FFFFFF;
+}
+
 .tier-title {
-  font-weight: 700;
-  font-size: 0.95rem;
+  font-size: 1.05rem;
 }
 
 .tier-sub {
-  font-size: 0.75rem;
+  font-size: 0.8rem;
   color: var(--text-muted);
 }
 
 .tier-content {
-  font-size: 0.88rem;
+  font-size: 0.95rem;
   font-weight: 500;
 }
 
-/* ER Model Visual */
-.er-diagram-container {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1.5rem;
-  margin-bottom: 2.5rem;
+/* LIVE MOTION DATA MODEL VISUALIZER */
+.model-view-switch {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
 }
 
-.er-table-box {
+.view-toggle-btn {
+  padding: 0.5rem 1rem;
+  font-family: var(--font-heading);
+  font-size: 0.9rem;
+  font-weight: 600;
+  border: 1px solid var(--border-subtle);
+  background: var(--bg-surface);
+  color: var(--text-secondary);
+  border-radius: 2px;
+  cursor: pointer;
+}
+
+.view-toggle-btn.active {
+  background: var(--accent-primary);
+  color: #FFFFFF;
+  border-color: var(--accent-primary);
+}
+
+/* Motion Canvas */
+.motion-diagram-container {
+  position: relative;
+  width: 100%;
+  min-height: 480px;
   background-color: var(--bg-surface);
   border: 1px solid var(--border-subtle);
   border-radius: 2px;
   overflow: hidden;
+  margin-bottom: 2.5rem;
 }
 
-.er-table-header {
+.motion-svg-overlay {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 10;
+}
+
+@keyframes flowDash {
+  from {
+    stroke-dashoffset: 24;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.rel-wire {
+  stroke: var(--text-muted);
+  stroke-width: 2;
+  stroke-dasharray: 6 6;
+  animation: flowDash 1.2s linear infinite;
+  transition: stroke 0.25s ease, stroke-width 0.25s ease;
+  fill: none;
+}
+
+.rel-wire.active-wire {
+  stroke: var(--accent-primary) !important;
+  stroke-width: 3.5 !important;
+}
+
+.diagram-nodes-grid {
+  position: relative;
+  z-index: 20;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+  padding: 2.5rem;
+}
+
+.model-node-card {
+  background-color: var(--bg-subtle);
+  border: 1px solid var(--border-subtle);
+  border-radius: 4px;
+  box-shadow: var(--shadow-subtle);
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+  cursor: pointer;
+}
+
+.model-node-card:hover, .model-node-card.focused {
+  transform: translateY(-3px);
+  border-color: var(--accent-primary);
+  box-shadow: 0 6px 18px rgba(200, 16, 46, 0.15);
+}
+
+.node-header {
   background-color: #121316;
   color: #FFFFFF;
-  padding: 0.6rem 1rem;
+  padding: 0.6rem 0.9rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: 0.85rem;
-  font-weight: 700;
+  font-family: var(--font-heading);
+  font-size: 0.95rem;
+  font-weight: 600;
+  border-radius: 3px 3px 0 0;
 }
 
-.er-row-count {
+.node-rows-badge {
   font-size: 0.75rem;
   color: #A0A4AE;
   font-weight: normal;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 1px 6px;
+  border-radius: 2px;
 }
 
-.er-table-body {
-  padding: 0.75rem 1rem;
+.node-body {
+  padding: 0.75rem 0.9rem;
   font-family: var(--font-mono);
-  font-size: 0.78rem;
+  font-size: 0.8rem;
 }
 
-.er-field {
+.node-row {
   display: flex;
   justify-content: space-between;
   padding: 0.25rem 0;
   border-bottom: 1px dashed var(--border-subtle);
 }
 
-.er-pk {
+.node-pk {
   color: var(--accent-primary);
   font-weight: 700;
 }
 
-.er-fk {
+.node-fk {
   color: var(--text-muted);
 }
 
-/* Footer Attribution */
+/* DBML Code Box */
+.dbml-code-block {
+  background-color: #0E1013;
+  color: #E2E4E9;
+  font-family: var(--font-mono);
+  font-size: 0.88rem;
+  line-height: 1.6;
+  padding: 1.5rem;
+  border-radius: 4px;
+  overflow-x: auto;
+  border: 1px solid var(--border-subtle);
+  margin-bottom: 2.5rem;
+  display: none;
+}
+
+.dbml-code-block.show {
+  display: block;
+}
+
+/* App Footer */
 .app-footer {
   margin-top: 3rem;
   padding: 1.5rem 0;
@@ -1009,7 +1256,7 @@ a {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: 0.8rem;
+  font-size: 0.88rem;
   color: var(--text-muted);
 }
 
@@ -1018,5 +1265,6 @@ a {
   align-items: center;
   gap: 0.5rem;
   color: var(--text-primary);
+  font-family: var(--font-heading);
   font-weight: 600;
 }

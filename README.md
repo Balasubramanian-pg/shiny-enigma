@@ -1,7 +1,7 @@
 # The Mentalist Explorer (Databricks App)
 
-[![CI & App Test](https://github.com/Balasubramanian-pg/shiny-enigma/actions/workflows/ci.yml/badge.svg)](https://github.com/Balasubramanian-pg/shiny-enigma/actions/workflows/ci.yml)
 [![FastAPI](https://img.shields.io/badge/Backend-FastAPI-009688.svg)](https://fastapi.tiangolo.com/)
+[![React 19](https://img.shields.io/badge/Components-React%2019%20%2B%20TypeScript-61DAFB.svg)](https://react.dev/)
 [![Databricks Apps](https://img.shields.io/badge/Platform-Databricks%20Apps-FF3621.svg)](https://docs.databricks.com/en/dev-tools/databricks-apps/index.html)
 [![Unity Catalog](https://img.shields.io/badge/Storage-Unity%20Catalog%20%26%20Delta-00A4EF.svg)](https://www.databricks.com/product/unity-catalog)
 
@@ -11,10 +11,24 @@ Built natively for **Databricks Apps** on Delta Lake in **Unity Catalog**, with 
 
 ---
 
+## 🎨 Design System & Typography Upgrades
+
+* **Headings:** **Afacad Semibold** (`font-family: 'Afacad', sans-serif; font-weight: 600;`)
+* **Body Text:** **Afacad Normal Light** (`font-family: 'Afacad', sans-serif; font-weight: 400;`)
+* **Signature Accent:** **Red John Blood Red** (`#C8102E`) & **Obsidian CBI Slate** (`#0E1013`)
+* **No Emojis:** Strictly semantic inline SVG icons across all layers, sidebars, and stat banners.
+* **Tactile Feedback & Motion Physics:** 
+  * Spring bounce on button and tab clicks (`transform: scale(0.96)`).
+  * Floating Action Feedback Toast delivering instant visual confirmation for user actions (switching themes, filtering seasons, comparing episodes, copying DBML).
+  * Smooth SVG sparklines, glowing chart col highlights, and character image hover zooms.
+
+---
+
 ## 📸 Key Features & Screens
 
 1. **Screen 1: Home Dashboard (`/`)**
    * High-level series KPIs, hero banner, interactive CBI/Red John face hover tags.
+   * Real actor portraits for Patrick Jane, Teresa Lisbon, Kimball Cho, Grace Van Pelt, and Red John.
    * Seasons 01–07 matrix with **embedded rating sparklines** and hover-flip storyline synopses.
    * Series milestone cards (Pilot, Episode 100, Red John Unmasked, Series Finale).
 2. **Screen 2: Episodes Explorer (`/episodes`)**
@@ -33,14 +47,25 @@ Built natively for **Databricks Apps** on Delta Lake in **Unity Catalog**, with 
    * Metric scorecard table with **automatic winner highlighting in crimson red**.
 5. **Screen 5: Characters & Organization (`/characters`)**
    * Structural hierarchy mapping: *CBI Core Team*, *CBI Leadership*, *FBI Austin Field Office*, and *Antagonists & Nemeses*.
-   * Detailed profile cards with portraits, character bios, and active season spans.
+   * High-resolution actor portraits, character bios, and active season spans.
 6. **Screen 6: Awards & Accolades (`/awards`)**
    * Emmy, Golden Globe, SAG, and People's Choice awards tracker.
    * Ceremony winner badges (Won in Red vs. Nominated in White).
    * Annual awards stacked bar chart (Major honors vs. Guild/Music awards) and acting honors list.
-7. **Screen 7: System Architecture & Live ER Diagram (`/about`)**
-   * Discloses the 5-tier Databricks Apps stack (Browser → App → Access → Storage → Sources).
-   * **Live Entity-Relationship (ER) diagram** reflecting row counts directly from Unity Catalog Delta tables.
+7. **Screen 7: System Architecture & Live Motion DBML (`/about`)**
+   * Discloses the 5-tier Databricks Apps stack (Browser → App → Access → Storage → Sources) with clean SVGs.
+   * **Live Motion Schema Graph:** Interactive canvas with animated dashed flow wires tracing 1-to-many relationships in real time.
+   * **DBML Specification Inspector:** Full DBML code representation with 1-click copy-to-clipboard.
+
+---
+
+## 🧩 React 19 UI Components
+
+Integrated in `src/components/ui/` with TypeScript and Tailwind CSS:
+
+* **`src/components/ui/responsive-sidebar.tsx`**: Production-ready, fully accessible responsive navigation sidebar with smooth width transitions, brand section, backdrop overlay, and keyboard navigation.
+* **`src/components/ui/expandable-gallery.tsx`**: Interactive photo gallery with smooth accordion item expansion, modal lightbox zoom, accessible ARIA attributes, and dark/light mode tokens.
+* **`lib/utils.ts`**: Standard `cn()` utility powered by `clsx` and `tailwind-merge`.
 
 ---
 
@@ -77,26 +102,10 @@ Built natively for **Databricks Apps** on Delta Lake in **Unity Catalog**, with 
 
 ---
 
-## 📊 Confidence Assessment Barometer
-
-| Assessment Pillar | Confidence | Key Justification |
-| :--- | :---: | :--- |
-| **Aesthetics & UI Fidelity** | **100% (10/10)** | Exact reproduction of Swiss typography, CSS variables, dark/light theme wipe, inline progress tracks, and responsive grid layouts. |
-| **Data Architecture (Unity Catalog)** | **100% (10/10)** | 1:1 schema parity with the 6 Delta tables (`shows`, `seasons`, `episodes`, `characters`, `season_cast`, `awards`) and DDL constraints. |
-| **Data Ingestion & Scraping** | **98% (9.8/10)** | Complete 151-episode data mapping, IMDb `tt1196946` ratings, Nielsen viewership statistics, and character bios. |
-| **Execution & CI/CD** | **100% (10/10)** | Automated GitHub Actions pipeline verifying data integrity, endpoint rendering, and packaging deployable bundles. |
-| **OVERALL COMPOSITE** | **99.5% (A+)** | **Production-ready blueprint and working implementation.** |
-
----
-
 ## 🚀 Running Locally or via GitHub Actions
 
-### 1. Run with Python Local Server
+### 1. Run Python Local Server
 ```bash
-# Clone the repository
-git clone https://github.com/Balasubramanian-pg/shiny-enigma.git
-cd shiny-enigma
-
 # Install dependencies
 pip install -r requirements.txt
 
@@ -107,76 +116,23 @@ Open **[http://localhost:8000](http://localhost:8000)** in your browser.
 
 ### 2. Run Automated Verification Tests
 ```bash
-pytest tests/test_app.py -v
+python -c "
+import sys, os
+sys.path.insert(0, os.path.abspath('app'))
+from main import app, DATA_CACHE, load_data
+from fastapi.testclient import TestClient
+
+load_data()
+client = TestClient(app)
+for path in ['/', '/episodes', '/episodes/tm_s06e08', '/compare', '/characters', '/awards', '/about']:
+    assert client.get(path).status_code == 200
+print('All endpoints verified!')
+"
 ```
 
----
-
-## ☁️ Deploying to Databricks Apps
-
-When you are ready to deploy into your Databricks workspace:
-
-### 1. Create Unity Catalog Tables
-Run the DDL scripts in a Databricks Notebook:
-* `sql/01_unity_catalog_ddl.sql`
-* `sql/02_seed_mentalist.sql`
-
-### 2. Deploy via Databricks CLI
+### 3. Verify TypeScript Components
 ```bash
-# Create the Databricks App
-databricks apps create mentalist-explorer
-
-# Deploy from local source directory
-databricks apps deploy mentalist-explorer --source-code-path .
-```
-
----
-
-## 📂 Repository Structure
-
-```
-shiny-enigma/
-├── .github/
-│   └── workflows/
-│       └── ci.yml               # GitHub Actions CI workflow
-├── app/
-│   ├── main.py                  # FastAPI application with dual-mode data layer
-│   ├── static/
-│   │   ├── css/
-│   │   │   └── styles.css       # Swiss typography & Red John color tokens
-│   │   └── js/
-│   │       └── main.js          # Theme toggle, search, chart tooltips
-│   └── templates/               # Jinja2 template views (Screens 1 to 7)
-│       ├── base.html
-│       ├── home.html
-│       ├── episodes.html
-│       ├── episode_detail.html
-│       ├── compare.html
-│       ├── characters.html
-│       ├── awards.html
-│       ├── about.html
-│       └── contact.html
-├── data/                        # 6 Seed CSV datasets (The Mentalist)
-│   ├── shows.csv
-│   ├── seasons.csv
-│   ├── episodes.csv
-│   ├── characters.csv
-│   ├── season_cast.csv
-│   └── awards.csv
-├── docs/
-│   ├── SPEC_REPORT.md           # Full Business Analyst report on Modern Family app
-│   └── THE_MENTALIST_BLUEPRINT.md # The Mentalist adaptation specification
-├── scripts/
-│   ├── generate_mentalist_data.py
-│   └── scrape_imdb_mentalist.py
-├── sql/
-│   ├── 01_unity_catalog_ddl.sql
-│   └── 02_seed_mentalist.sql
-├── tests/
-│   └── test_app.py              # Pytest endpoint and data validation
-├── app.yaml                     # Databricks App manifest
-├── requirements.txt
-└── README.md
+npx tsc --noEmit
 ```
 
 ---
