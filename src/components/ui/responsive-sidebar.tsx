@@ -99,18 +99,22 @@ export const ResponsiveSidebar: React.FC<ResponsiveSidebarProps> = ({
       {/* Mobile Hamburger Trigger */}
       <button
         type="button"
-        className="md:hidden fixed top-4 left-4 z-50 p-2 rounded-md bg-white/80 dark:bg-neutral-900/80 backdrop-blur-md border border-neutral-200 dark:border-neutral-800 shadow-md text-neutral-800 dark:text-neutral-100 focus:outline-none focus:ring-2 focus:ring-red-600"
+        className="md:hidden fixed top-4 left-4 z-50 p-2 rounded-md bg-paper-2 border border-rule text-ink shadow-sm hover:border-accent/40 active:opacity-85 disabled:opacity-40 focus-visible:outline focus-visible:outline-2 focus-visible:outline-focus"
         aria-label={isMobileOpen ? "Close navigation menu" : "Open navigation menu"}
         aria-expanded={isMobileOpen}
         onClick={() => setIsMobileOpen(!isMobileOpen)}
       >
-        {isMobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+        {isMobileOpen ? (
+          <X className="w-5 h-5" aria-hidden="true" />
+        ) : (
+          <Menu className="w-5 h-5" aria-hidden="true" />
+        )}
       </button>
 
       {/* Mobile Backdrop Overlay */}
       {isMobileOpen && (
         <div
-          className="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm md:hidden transition-opacity duration-300"
+          className="fixed inset-0 z-40 bg-black/70 md:hidden transition-opacity duration-200"
           onClick={() => setIsMobileOpen(false)}
           aria-hidden="true"
         />
@@ -121,45 +125,39 @@ export const ResponsiveSidebar: React.FC<ResponsiveSidebarProps> = ({
         ref={sidebarRef}
         aria-label="Sidebar Navigation"
         className={cn(
-          "relative flex flex-col h-screen transition-all duration-300 ease-in-out z-40",
-          "border-r border-neutral-200/80 dark:border-neutral-800/80 overflow-hidden",
-          // Width transitions
+          "relative flex flex-col h-screen transition-transform duration-200 ease-in-out motion-reduce:transition-none z-40",
+          "border-r border-rule bg-paper-2 overflow-hidden",
           isCollapsed ? "w-20" : "w-64",
-          // Mobile responsive positioning
           "fixed md:sticky top-0 left-0",
           isMobileOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0",
           className
         )}
       >
-        {/* Background Visual Backdrop with semi-transparent overlay */}
+        {/* Background Visual Backdrop with subtle opacity */}
         {bgImageUrl && (
           <div
-            className="absolute inset-0 bg-cover bg-center -z-10 opacity-15 dark:opacity-20"
+            className="absolute inset-0 bg-cover bg-center -z-10 opacity-10"
             style={{ backgroundImage: `url(${bgImageUrl})` }}
             aria-hidden="true"
           />
         )}
-        <div
-          className="absolute inset-0 bg-white/85 dark:bg-neutral-950/90 backdrop-blur-md -z-10"
-          aria-hidden="true"
-        />
 
         {/* Brand Header */}
-        <div className="flex items-center justify-between px-4 py-5 border-b border-neutral-200/60 dark:border-neutral-800/60">
+        <div className="flex items-center justify-between px-4 py-5 border-b border-rule">
           <div className="flex items-center gap-3 overflow-hidden">
             {brandLogo ? (
               <div className="shrink-0">{brandLogo}</div>
             ) : (
-              <div className="w-9 h-9 rounded-lg bg-red-600 flex items-center justify-center text-white font-bold shrink-0 shadow-sm">
+              <div className="w-9 h-9 rounded-lg bg-accent flex items-center justify-center text-accent-ink font-bold shrink-0 shadow-sm">
                 M
               </div>
             )}
             {!isCollapsed && (
               <div className="flex flex-col truncate">
-                <span className="font-semibold text-neutral-900 dark:text-neutral-100 text-sm tracking-tight truncate">
+                <span className="font-semibold text-ink text-sm tracking-tight truncate">
                   {brandTitle}
                 </span>
-                <span className="text-[11px] text-neutral-500 dark:text-neutral-400 font-medium truncate">
+                <span className="text-xs text-muted font-normal truncate">
                   {brandSubtitle}
                 </span>
               </div>
@@ -170,14 +168,14 @@ export const ResponsiveSidebar: React.FC<ResponsiveSidebarProps> = ({
           <button
             type="button"
             onClick={handleToggle}
-            className="hidden md:flex p-1.5 rounded-md hover:bg-neutral-200/50 dark:hover:bg-neutral-800/50 text-neutral-600 dark:text-neutral-300 focus:outline-none focus:ring-2 focus:ring-red-600 transition-colors"
+            className="hidden md:flex p-1.5 rounded-md hover:bg-paper-3 active:opacity-85 disabled:opacity-40 text-muted hover:text-ink focus-visible:outline focus-visible:outline-2 focus-visible:outline-focus transition-colors duration-150"
             aria-label={isCollapsed ? "Expand sidebar" : "Collapse sidebar"}
             aria-expanded={!isCollapsed}
           >
             {isCollapsed ? (
-              <ChevronRight className="w-4 h-4" />
+              <ChevronRight className="w-4 h-4" aria-hidden="true" />
             ) : (
-              <ChevronLeft className="w-4 h-4" />
+              <ChevronLeft className="w-4 h-4" aria-hidden="true" />
             )}
           </button>
         </div>
@@ -193,22 +191,23 @@ export const ResponsiveSidebar: React.FC<ResponsiveSidebarProps> = ({
                 type="button"
                 onClick={() => handleItemClick(item)}
                 className={cn(
-                  "w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-150 group",
-                  "focus:outline-none focus:ring-2 focus:ring-red-600",
+                  "w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors duration-150 motion-reduce:transition-none group",
+                  "focus-visible:outline focus-visible:outline-2 focus-visible:outline-focus active:opacity-90 disabled:opacity-40",
                   isActive
-                    ? "bg-red-600/10 text-red-600 dark:bg-red-600/20 dark:text-red-400 font-semibold"
-                    : "text-neutral-700 dark:text-neutral-300 hover:bg-neutral-200/50 dark:hover:bg-neutral-800/50 hover:text-neutral-900 dark:hover:text-neutral-100"
+                    ? "bg-accent/15 text-accent font-semibold border border-accent/30"
+                    : "text-ink-2 hover:bg-paper-3 hover:text-ink border border-transparent"
                 )}
                 role="menuitem"
                 aria-current={isActive ? "page" : undefined}
                 title={isCollapsed ? item.label : undefined}
               >
                 <Icon
+                  aria-hidden="true"
                   className={cn(
-                    "w-5 h-5 shrink-0 transition-colors",
+                    "w-5 h-5 shrink-0 transition-colors duration-150",
                     isActive
-                      ? "text-red-600 dark:text-red-400"
-                      : "text-neutral-500 dark:text-neutral-400 group-hover:text-neutral-800 dark:group-hover:text-neutral-200"
+                      ? "text-accent"
+                      : "text-muted group-hover:text-ink"
                   )}
                 />
                 {!isCollapsed && (
@@ -219,8 +218,8 @@ export const ResponsiveSidebar: React.FC<ResponsiveSidebarProps> = ({
                     className={cn(
                       "px-2 py-0.5 text-xs font-semibold rounded-full",
                       isActive
-                        ? "bg-red-600 text-white"
-                        : "bg-neutral-200 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-300"
+                        ? "bg-accent text-accent-ink"
+                        : "bg-paper-3 text-muted"
                     )}
                   >
                     {item.badge}
@@ -232,13 +231,13 @@ export const ResponsiveSidebar: React.FC<ResponsiveSidebarProps> = ({
         </nav>
 
         {/* Footer info / system credit */}
-        <div className="p-3 border-t border-neutral-200/60 dark:border-neutral-800/60 text-center">
+        <div className="p-3 border-t border-rule text-center">
           {!isCollapsed ? (
-            <div className="text-[11px] text-neutral-400 dark:text-neutral-500">
-              © 2026 Databricks Apps · Unity Catalog
+            <div className="text-xs text-muted">
+              © 2026 Databricks Apps, Unity Catalog
             </div>
           ) : (
-            <div className="text-[10px] text-neutral-400 font-mono">v1.0</div>
+            <div className="text-xs text-muted">v1.0</div>
           )}
         </div>
       </aside>

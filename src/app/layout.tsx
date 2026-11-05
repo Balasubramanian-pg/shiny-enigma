@@ -26,7 +26,7 @@ export default function RootLayout({
           rel="stylesheet"
         />
       </head>
-      <body className="antialiased min-h-screen selection:bg-[#C8102E] selection:text-white">
+      <body className="antialiased min-h-screen selection:bg-accent selection:text-accent-ink bg-paper text-ink">
         <LayoutShell>{children}</LayoutShell>
       </body>
     </html>

@@ -6,16 +6,11 @@ import {
   Layers,
   Cpu,
   Server,
-  HardDrive,
   Copy,
   Check,
   Table,
   GitBranch,
-  ShieldCheck,
   Terminal,
-  Activity,
-  ArrowRight,
-  ExternalLink,
   Info,
 } from "lucide-react";
 import { SHOW, SEASONS, EPISODES, CHARACTERS, SEASON_CAST, AWARDS } from "@/src/data/mentalist-data";
@@ -283,15 +278,15 @@ export default function AboutPage() {
 
   const architectureTiers = [
     {
-      tier: "TIER 01",
+      tier: "Tier 01",
       title: "Storage & Governance",
       tech: "Unity Catalog & Delta Lake 3.2.0",
       icon: Database,
-      desc: "Centralized enterprise metadata catalog governing catalog 'main' and schema 'tvshows'. Delta Lake ACID tables provide snappy columnar parquet reads and versioned time travel.",
+      desc: "Centralized enterprise metadata catalog governing catalog “main” and schema “tvshows”. Delta Lake ACID tables provide snappy columnar parquet reads and versioned time travel.",
       metric: "6 Governed Tables",
     },
     {
-      tier: "TIER 02",
+      tier: "Tier 02",
       title: "Analytical Compute",
       tech: "Databricks Serverless SQL Warehouse",
       icon: Cpu,
@@ -299,7 +294,7 @@ export default function AboutPage() {
       metric: "Serverless SQL 2X-Small",
     },
     {
-      tier: "TIER 03",
+      tier: "Tier 03",
       title: "Data Services Layer",
       tech: "Python 3.13 & Databricks SDK",
       icon: Terminal,
@@ -307,7 +302,7 @@ export default function AboutPage() {
       metric: "100% Schema Parity",
     },
     {
-      tier: "TIER 04",
+      tier: "Tier 04",
       title: "Editorial Presentation",
       tech: "React 19, Framer Motion & Tailwind",
       icon: Layers,
@@ -315,7 +310,7 @@ export default function AboutPage() {
       metric: "60 FPS Tactile UI",
     },
     {
-      tier: "TIER 05",
+      tier: "Tier 05",
       title: "Application Hosting",
       tech: "Databricks Apps Runtime",
       icon: Server,
@@ -325,24 +320,18 @@ export default function AboutPage() {
   ];
 
   return (
-    <div className="space-y-10 animate-fadeIn">
+    <div className="space-y-8">
       {/* Header */}
       <div>
-        <div className="flex items-center gap-2 mb-1">
-          <span className="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-[#C8102E] text-white">
-            PLATFORM ARCHITECTURE & DATA MODELS
-          </span>
-          <span className="text-xs text-neutral-400">Unity Catalog main.tvshows</span>
-        </div>
-        <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-neutral-900 dark:text-white font-heading">
+        <h1 className="text-3xl sm:text-4xl font-semibold tracking-tight text-ink">
           Architecture & Live DBML Graph
         </h1>
-        <p className="text-xs sm:text-sm text-neutral-500 dark:text-neutral-400 font-body">
-          Databricks 5-Tier serverless architecture and animated relational entity graph for The Mentalist
+        <p className="mt-2 text-sm text-muted">
+          Databricks 5-tier serverless architecture and animated relational entity graph for The Mentalist across Unity Catalog catalog “main”, schema “tvshows”.
         </p>
       </div>
 
-      {/* LIVE DATASET ROW COUNTS STRIP */}
+      {/* Live Dataset Row Counts Strip */}
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
         {DBML_TABLES.map((t) => (
           <div
@@ -352,47 +341,47 @@ export default function AboutPage() {
               setActiveTable(t.id);
             }}
             onMouseLeave={() => setActiveTable(null)}
-            className={`p-3.5 rounded-xl border transition-all cursor-pointer ${
+            className={`p-3.5 rounded-xl border transition-colors duration-150 cursor-pointer ${
               activeTable === t.id
-                ? "border-[#C8102E] bg-[#C8102E]/10"
-                : "border-neutral-200/80 dark:border-neutral-800/80 bg-white/70 dark:bg-[#12161F]/70"
+                ? "border-accent bg-accent/10"
+                : "border-rule bg-paper-2"
             }`}
           >
-            <div className="flex items-center justify-between text-neutral-400 mb-1">
-              <span className="text-[10px] font-mono font-bold">TABLE</span>
-              <Table className="w-3.5 h-3.5 text-[#C8102E]" />
+            <div className="flex items-center justify-between text-muted mb-1">
+              <span className="text-xs font-medium">Table</span>
+              <Table className="w-3.5 h-3.5 text-accent" aria-hidden="true" />
             </div>
-            <div className="text-xs font-bold text-neutral-900 dark:text-white font-mono truncate">
+            <div className="text-xs font-semibold text-ink font-mono truncate">
               {t.name}
             </div>
-            <div className="text-lg font-bold text-[#C8102E] font-heading mt-0.5">
-              {t.rows} <span className="text-[10px] font-normal text-neutral-400">rows</span>
+            <div className="text-lg font-semibold text-accent mt-0.5 tabular-nums">
+              {t.rows} <span className="text-xs font-normal text-muted">rows</span>
             </div>
           </div>
         ))}
       </div>
 
-      {/* LIVE MOTION DBML CANVAS SECTION */}
-      <section className="p-6 sm:p-8 rounded-2xl border border-neutral-200/80 dark:border-neutral-800/80 bg-white/70 dark:bg-[#10141D]/80 backdrop-blur-md shadow-lg space-y-4">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-neutral-200 dark:border-neutral-800 pb-4">
-          <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-lg bg-[#C8102E] flex items-center justify-center text-white">
-              <GitBranch className="w-5 h-5" />
+      {/* Live Motion DBML Canvas Section */}
+      <section className="p-6 sm:p-8 rounded-xl border border-rule bg-paper-2 shadow-sm space-y-4">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-rule pb-4">
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 rounded-lg bg-accent flex items-center justify-center text-accent-ink">
+              <GitBranch className="w-4 h-4" aria-hidden="true" />
             </div>
             <div>
-              <h2 className="text-xl font-bold text-neutral-900 dark:text-white font-heading">
+              <h2 className="text-lg font-semibold text-ink">
                 Live Motion Relational DBML Diagram
               </h2>
-              <p className="text-xs text-neutral-500 dark:text-neutral-400">
+              <p className="text-xs text-muted">
                 Animated bezier wires illustrate streaming entity integrity between Unity Catalog Delta tables
               </p>
             </div>
           </div>
 
           <div className="flex items-center gap-2">
-            <span className="flex items-center gap-1.5 text-xs text-neutral-400 font-mono">
-              <span className="w-2 h-2 rounded-full bg-[#C8102E] animate-ping" />
-              Live Relational Sync
+            <span className="flex items-center gap-1.5 text-xs text-muted">
+              <span className="w-2 h-2 rounded-full bg-accent" aria-hidden="true" />
+              Live relational sync
             </span>
           </div>
         </div>
@@ -404,14 +393,8 @@ export default function AboutPage() {
             <svg
               className="absolute inset-0 w-full h-full pointer-events-none z-10"
               viewBox="0 0 900 580"
+              aria-hidden="true"
             >
-              <defs>
-                <linearGradient id="wireGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                  <stop offset="0%" stopColor="#C8102E" />
-                  <stop offset="100%" stopColor="#E11D48" />
-                </linearGradient>
-              </defs>
-
               {RELATION_WIRES.map((wire, idx) => {
                 const isWireActive =
                   activeTable === null ||
@@ -424,8 +407,9 @@ export default function AboutPage() {
                     <path
                       d={wire.path}
                       fill="none"
-                      stroke={isWireActive ? "rgba(200, 16, 46, 0.25)" : "rgba(100, 100, 100, 0.15)"}
-                      strokeWidth={isWireActive ? "4" : "2"}
+                      stroke={isWireActive ? "var(--color-accent)" : "var(--color-rule)"}
+                      strokeOpacity={isWireActive ? "0.2" : "0.5"}
+                      strokeWidth={isWireActive ? "4" : "1.5"}
                       strokeLinecap="round"
                     />
 
@@ -433,11 +417,10 @@ export default function AboutPage() {
                     <path
                       d={wire.path}
                       fill="none"
-                      stroke={isWireActive ? "#C8102E" : "rgba(150, 150, 150, 0.3)"}
+                      stroke={isWireActive ? "var(--color-accent)" : "var(--color-rule)"}
                       strokeWidth={isWireActive ? "2" : "1"}
                       strokeDasharray="6 6"
                       strokeDashoffset={isWireActive ? "-20" : "0"}
-                      className={isWireActive ? "animate-[dash_1.5s_linear_infinite]" : ""}
                     />
                   </g>
                 );
@@ -461,52 +444,52 @@ export default function AboutPage() {
                     setActiveTable(table.id);
                   }}
                   onMouseLeave={() => setActiveTable(null)}
-                  className={`absolute z-20 rounded-xl overflow-hidden border shadow-md transition-all duration-200 cursor-pointer ${
+                  className={`absolute z-20 rounded-xl overflow-hidden border transition-colors duration-150 cursor-pointer ${
                     isSelected
-                      ? "border-[#C8102E] bg-white dark:bg-[#151923] ring-2 ring-[#C8102E]/30 scale-[1.02]"
-                      : "border-neutral-200 dark:border-neutral-800 bg-white/90 dark:bg-[#12161F]/90"
+                      ? "border-accent bg-paper shadow-md"
+                      : "border-rule bg-paper-2"
                   }`}
                 >
                   {/* Table Header */}
                   <div
                     className={`px-3 py-2 flex items-center justify-between border-b ${
                       isSelected
-                        ? "bg-[#C8102E] text-white border-[#C8102E]"
-                        : "bg-neutral-100 dark:bg-neutral-800 text-neutral-800 dark:text-neutral-200 border-neutral-200 dark:border-neutral-700"
+                        ? "bg-accent text-accent-ink border-accent"
+                        : "bg-paper-3 text-ink border-rule"
                     }`}
                   >
-                    <div className="flex items-center gap-1.5 font-mono text-xs font-bold">
-                      <Table className="w-3.5 h-3.5" />
+                    <div className="flex items-center gap-1.5 font-mono text-xs font-medium">
+                      <Table className="w-3.5 h-3.5" aria-hidden="true" />
                       <span>{table.name}</span>
                     </div>
-                    <span className="text-[10px] font-mono opacity-80">
+                    <span className="text-xs tabular-nums opacity-80">
                       {table.rows} rows
                     </span>
                   </div>
 
                   {/* Table Fields */}
-                  <div className="p-2 space-y-1 text-[11px] font-mono">
+                  <div className="p-2 space-y-1 text-xs">
                     {table.fields.map((field) => (
                       <div
                         key={field.name}
-                        className="flex items-center justify-between px-1.5 py-0.5 rounded hover:bg-neutral-100 dark:hover:bg-neutral-800/60"
+                        className="flex items-center justify-between px-1.5 py-0.5 rounded hover:bg-paper-3"
                       >
                         <div className="flex items-center gap-1.5">
                           {field.isPk && (
-                            <span className="px-1 py-0.2 rounded bg-amber-500/20 text-amber-600 dark:text-amber-400 text-[9px] font-bold">
+                            <span className="px-1 py-0.2 rounded bg-amber-500/20 text-amber-400 text-xs font-medium">
                               PK
                             </span>
                           )}
                           {field.isFk && (
-                            <span className="px-1 py-0.2 rounded bg-[#C8102E]/20 text-[#C8102E] text-[9px] font-bold">
+                            <span className="px-1 py-0.2 rounded bg-accent/20 text-accent text-xs font-medium">
                               FK
                             </span>
                           )}
-                          <span className="text-neutral-800 dark:text-neutral-200">
+                          <span className="text-ink font-mono">
                             {field.name}
                           </span>
                         </div>
-                        <span className="text-neutral-400 text-[10px]">
+                        <span className="text-muted text-xs font-mono">
                           {field.type}
                         </span>
                       </div>
@@ -519,23 +502,23 @@ export default function AboutPage() {
         </div>
 
         {/* Hover Tip */}
-        <div className="flex items-center justify-between pt-2 text-xs text-neutral-400">
+        <div className="flex items-center justify-between pt-2 text-xs text-muted">
           <div className="flex items-center gap-2">
-            <Info className="w-3.5 h-3.5 text-[#C8102E]" />
+            <Info className="w-3.5 h-3.5 text-accent shrink-0" aria-hidden="true" />
             <span>Hover any table card to isolate relational foreign key wires and stream pulses</span>
           </div>
-          <span className="font-mono text-[11px]">Engine: Delta Lake 3.2.0 ACID</span>
+          <span className="tabular-nums">Engine: Delta Lake 3.2.0 ACID</span>
         </div>
       </section>
 
-      {/* SYNTAX HIGHLIGHTED DBML CODE BLOCK WITH 1-CLICK COPY */}
+      {/* Syntax Highlighted DBML Code Block with 1-Click Copy */}
       <section className="space-y-4">
         <div className="flex items-center justify-between">
           <div>
-            <h2 className="text-xl font-bold tracking-tight text-neutral-900 dark:text-white font-heading">
+            <h2 className="text-lg font-semibold tracking-tight text-ink">
               Declarative DBML Schema Definition
             </h2>
-            <p className="text-xs text-neutral-500 font-body">
+            <p className="text-xs text-muted">
               Production-ready Database Markup Language file compatible with dbdocs.io and dbdiagram.io
             </p>
           </div>
@@ -543,36 +526,36 @@ export default function AboutPage() {
           <button
             type="button"
             onClick={handleCopy}
-            className="px-3.5 py-1.5 rounded-xl bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 text-xs font-semibold flex items-center gap-1.5 hover:bg-neutral-800 dark:hover:bg-neutral-200 transition-colors shadow-sm cursor-pointer"
+            className="px-3.5 py-1.5 rounded-lg bg-paper-3 border border-rule hover:border-accent text-ink text-xs font-medium flex items-center gap-1.5 active:opacity-85 disabled:opacity-40 focus-visible:outline focus-visible:outline-2 focus-visible:outline-focus transition-colors duration-150 shadow-sm cursor-pointer"
           >
             {copied ? (
               <>
-                <Check className="w-3.5 h-3.5 text-emerald-500" />
+                <Check className="w-3.5 h-3.5 text-emerald-500" aria-hidden="true" />
                 <span>Copied DBML</span>
               </>
             ) : (
               <>
-                <Copy className="w-3.5 h-3.5" />
+                <Copy className="w-3.5 h-3.5" aria-hidden="true" />
                 <span>Copy DBML</span>
               </>
             )}
           </button>
         </div>
 
-        <div className="relative rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-neutral-950 p-5 overflow-hidden text-neutral-200 font-mono text-xs">
+        <div className="relative rounded-xl border border-rule bg-paper p-5 overflow-hidden text-ink font-mono text-xs">
           <pre className="overflow-x-auto max-h-96 leading-relaxed">
             <code>{RAW_DBML_STRING}</code>
           </pre>
         </div>
       </section>
 
-      {/* DATABRICKS 5-TIER ARCHITECTURE SPECIFICATION */}
+      {/* Databricks 5-Tier Architecture Stack */}
       <section className="space-y-4">
         <div>
-          <h2 className="text-xl font-bold tracking-tight text-neutral-900 dark:text-white font-heading">
+          <h2 className="text-lg font-semibold tracking-tight text-ink">
             Databricks 5-Tier Architecture Stack
           </h2>
-          <p className="text-xs text-neutral-500 font-body">
+          <p className="text-xs text-muted">
             End-to-end data pipelines from Delta Lake storage to reactive React 19 presentation
           </p>
         </div>
@@ -583,29 +566,29 @@ export default function AboutPage() {
             return (
               <div
                 key={tier.tier}
-                className="p-5 rounded-xl border border-neutral-200/80 dark:border-neutral-800/80 bg-white/70 dark:bg-[#12161F]/70 backdrop-blur-sm shadow-sm space-y-3 flex flex-col justify-between"
+                className="p-5 rounded-xl border border-rule bg-paper-2 shadow-sm space-y-3 flex flex-col justify-between"
               >
                 <div className="space-y-2">
                   <div className="flex items-center justify-between">
-                    <span className="text-[10px] font-bold font-mono px-2 py-0.5 rounded bg-neutral-100 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-300">
+                    <span className="text-xs font-medium px-2 py-0.5 rounded bg-paper-3 text-muted border border-rule">
                       {tier.tier}
                     </span>
-                    <Icon className="w-4 h-4 text-[#C8102E]" />
+                    <Icon className="w-4 h-4 text-accent" aria-hidden="true" />
                   </div>
-                  <h3 className="text-base font-bold text-neutral-900 dark:text-white font-heading">
+                  <h3 className="text-base font-semibold text-ink">
                     {tier.title}
                   </h3>
-                  <div className="text-xs font-semibold text-[#C8102E] font-mono">
+                  <div className="text-xs font-medium text-accent">
                     {tier.tech}
                   </div>
-                  <p className="text-xs text-neutral-600 dark:text-neutral-400 leading-relaxed pt-1">
+                  <p className="text-xs text-muted leading-relaxed pt-1">
                     {tier.desc}
                   </p>
                 </div>
 
-                <div className="pt-3 border-t border-neutral-100 dark:border-neutral-800 text-[11px] font-mono text-neutral-500 dark:text-neutral-400 flex items-center justify-between">
+                <div className="pt-3 border-t border-rule text-xs text-muted flex items-center justify-between">
                   <span>Spec Metric:</span>
-                  <span className="font-semibold text-neutral-800 dark:text-neutral-200">
+                  <span className="font-medium text-ink">
                     {tier.metric}
                   </span>
                 </div>

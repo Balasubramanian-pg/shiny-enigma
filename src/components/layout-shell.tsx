@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import Link from "next/navigation";
 import { usePathname, useRouter } from "next/navigation";
 import {
   LayoutDashboard,
@@ -16,11 +15,10 @@ import {
   Sun,
   Moon,
   Search,
-  Sparkles,
-  Command,
   X,
   ExternalLink,
   ChevronRight,
+  Star,
 } from "lucide-react";
 import { ResponsiveSidebar, NavItem } from "@/src/components/ui/responsive-sidebar";
 import { sound } from "@/lib/sound";
@@ -33,14 +31,13 @@ interface LayoutShellProps {
 export function LayoutShell({ children }: LayoutShellProps) {
   const pathname = usePathname();
   const router = useRouter();
-  
+
   const [isDark, setIsDark] = useState<boolean>(true);
   const [audioEnabled, setAudioEnabled] = useState<boolean>(true);
   const [searchOpen, setSearchOpen] = useState<boolean>(false);
   const [searchQuery, setSearchQuery] = useState<string>("");
 
   useEffect(() => {
-    // Check initial dark mode from DOM or localStorage
     const savedTheme = localStorage.getItem("mentalist_theme");
     if (savedTheme === "light") {
       setIsDark(false);
@@ -52,7 +49,6 @@ export function LayoutShell({ children }: LayoutShellProps) {
 
     setAudioEnabled(sound.isEnabled());
 
-    // Keyboard shortcut for search (Cmd+K or Ctrl+K)
     const handleKeyDown = (e: KeyboardEvent) => {
       if ((e.metaKey || e.ctrlKey) && e.key === "k") {
         e.preventDefault();
@@ -85,7 +81,6 @@ export function LayoutShell({ children }: LayoutShellProps) {
     setAudioEnabled(next);
   };
 
-  // Map path to active navigation ID
   const getActiveId = () => {
     if (!pathname || pathname === "/") return "dashboard";
     if (pathname.startsWith("/episodes")) return "episodes";
@@ -100,7 +95,7 @@ export function LayoutShell({ children }: LayoutShellProps) {
   const navItems: NavItem[] = [
     {
       id: "dashboard",
-      label: "Series Dossier",
+      label: "Series dossier",
       icon: LayoutDashboard,
       onClick: () => {
         sound.tab();
@@ -109,7 +104,7 @@ export function LayoutShell({ children }: LayoutShellProps) {
     },
     {
       id: "episodes",
-      label: "Episodes Explorer",
+      label: "Episodes explorer",
       icon: Tv,
       badge: "151",
       onClick: () => {
@@ -119,7 +114,7 @@ export function LayoutShell({ children }: LayoutShellProps) {
     },
     {
       id: "compare",
-      label: "Compare Episodes",
+      label: "Compare episodes",
       icon: GitCompare,
       onClick: () => {
         sound.tab();
@@ -128,7 +123,7 @@ export function LayoutShell({ children }: LayoutShellProps) {
     },
     {
       id: "characters",
-      label: "CBI Dossiers & Suspects",
+      label: "CBI dossiers and suspects",
       icon: Users,
       badge: "14",
       onClick: () => {
@@ -138,7 +133,7 @@ export function LayoutShell({ children }: LayoutShellProps) {
     },
     {
       id: "awards",
-      label: "Honors & Nominations",
+      label: "Honors and nominations",
       icon: Trophy,
       badge: "12",
       onClick: () => {
@@ -148,7 +143,7 @@ export function LayoutShell({ children }: LayoutShellProps) {
     },
     {
       id: "about",
-      label: "Architecture & DBML",
+      label: "Architecture and DBML",
       icon: Database,
       onClick: () => {
         sound.tab();
@@ -157,7 +152,7 @@ export function LayoutShell({ children }: LayoutShellProps) {
     },
     {
       id: "contact",
-      label: "CBI Field Contact",
+      label: "CBI field dispatch",
       icon: Shield,
       onClick: () => {
         sound.tab();
@@ -166,7 +161,6 @@ export function LayoutShell({ children }: LayoutShellProps) {
     },
   ];
 
-  // Filter search results
   const filteredEpisodes = searchQuery.trim()
     ? EPISODES.filter(
         (e) =>
@@ -186,7 +180,7 @@ export function LayoutShell({ children }: LayoutShellProps) {
     : [];
 
   return (
-    <div className="min-h-screen bg-[#F9F8F6] dark:bg-[#0A0C10] text-neutral-900 dark:text-neutral-100 flex flex-col md:flex-row transition-colors duration-200">
+    <div className="min-h-screen bg-paper text-ink flex flex-col md:flex-row transition-colors duration-200">
       {/* Responsive Sidebar */}
       <ResponsiveSidebar
         brandTitle="The Mentalist"
@@ -195,13 +189,12 @@ export function LayoutShell({ children }: LayoutShellProps) {
         items={navItems}
         activeId={getActiveId()}
         brandLogo={
-          <div className="w-9 h-9 rounded-lg bg-[#C8102E] flex items-center justify-center text-white font-bold shadow-sm ring-1 ring-white/20">
+          <div className="w-9 h-9 rounded-md bg-accent flex items-center justify-center text-accent-ink font-semibold">
             <svg
               className="w-5 h-5 fill-current"
               viewBox="0 0 24 24"
               aria-hidden="true"
             >
-              {/* Red John Smile Motif Icon in pure SVG */}
               <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="2" fill="none" />
               <circle cx="9" cy="10" r="1.5" />
               <circle cx="15" cy="10" r="1.5" />
@@ -220,15 +213,15 @@ export function LayoutShell({ children }: LayoutShellProps) {
       {/* Main Content Area */}
       <div className="flex-1 flex flex-col min-w-0">
         {/* Top Header Bar */}
-        <header className="sticky top-0 z-30 h-16 border-b border-neutral-200/80 dark:border-neutral-800/80 bg-white/80 dark:bg-[#0A0C10]/85 backdrop-blur-md px-4 sm:px-6 flex items-center justify-between">
+        <header className="sticky top-0 z-30 h-16 border-b border-rule bg-paper-2 px-4 sm:px-6 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="hidden sm:flex items-center gap-2 text-xs font-medium text-neutral-500 dark:text-neutral-400">
-              <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md bg-neutral-100 dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300 border border-neutral-200 dark:border-neutral-700 font-mono text-[11px]">
-                <Database className="w-3 h-3 text-[#C8102E]" />
-                Unity Catalog: main.tvshows
+            <div className="hidden sm:flex items-center gap-2 text-xs font-normal text-muted">
+              <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-paper-3 text-ink border border-rule text-xs">
+                <Database className="w-3.5 h-3.5 text-accent" aria-hidden="true" />
+                <span>Unity Catalog: main.tvshows</span>
               </span>
-              <ChevronRight className="w-3.5 h-3.5" />
-              <span className="capitalize text-neutral-800 dark:text-neutral-200 font-semibold">
+              <ChevronRight className="w-3.5 h-3.5 text-muted" aria-hidden="true" />
+              <span className="capitalize text-ink font-medium">
                 {getActiveId()}
               </span>
             </div>
@@ -242,11 +235,11 @@ export function LayoutShell({ children }: LayoutShellProps) {
                 sound.click();
                 setSearchOpen(true);
               }}
-              className="flex items-center gap-2 px-3 py-1.5 rounded-lg border border-neutral-200 dark:border-neutral-800 bg-neutral-100/80 dark:bg-neutral-900/80 hover:bg-neutral-200/60 dark:hover:bg-neutral-800/60 text-neutral-500 dark:text-neutral-400 text-xs transition-colors"
+              className="flex items-center gap-2 px-3 py-1.5 rounded-md border border-rule bg-paper-3 hover:bg-paper text-muted text-xs transition-colors whitespace-nowrap focus-visible:outline-2 focus-visible:outline-focus"
             >
-              <Search className="w-3.5 h-3.5" />
-              <span className="hidden sm:inline">Search cases, suspects, episodes...</span>
-              <kbd className="hidden sm:inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded bg-neutral-200 dark:bg-neutral-800 text-[10px] font-mono text-neutral-600 dark:text-neutral-400">
+              <Search className="w-3.5 h-3.5" aria-hidden="true" />
+              <span className="hidden sm:inline">Search cases</span>
+              <kbd className="hidden sm:inline-flex items-center px-1.5 py-0.5 rounded bg-paper-2 border border-rule text-[11px] text-muted">
                 ⌘K
               </kbd>
             </button>
@@ -255,14 +248,14 @@ export function LayoutShell({ children }: LayoutShellProps) {
             <button
               type="button"
               onClick={toggleAudio}
-              className="p-2 rounded-lg border border-neutral-200 dark:border-neutral-800 hover:bg-neutral-100 dark:hover:bg-neutral-800 text-neutral-600 dark:text-neutral-300 transition-colors"
+              className="p-2 rounded-md border border-rule bg-paper-3 hover:bg-paper text-ink transition-colors focus-visible:outline-2 focus-visible:outline-focus"
               title={audioEnabled ? "Disable tactile micro-haptics audio" : "Enable tactile micro-haptics audio"}
               aria-label="Toggle interaction audio"
             >
               {audioEnabled ? (
-                <Volume2 className="w-4 h-4 text-[#C8102E]" />
+                <Volume2 className="w-4 h-4 text-accent" aria-hidden="true" />
               ) : (
-                <VolumeX className="w-4 h-4 text-neutral-400" />
+                <VolumeX className="w-4 h-4 text-muted" aria-hidden="true" />
               )}
             </button>
 
@@ -270,14 +263,14 @@ export function LayoutShell({ children }: LayoutShellProps) {
             <button
               type="button"
               onClick={toggleTheme}
-              className="p-2 rounded-lg border border-neutral-200 dark:border-neutral-800 hover:bg-neutral-100 dark:hover:bg-neutral-800 text-neutral-600 dark:text-neutral-300 transition-colors"
-              title={isDark ? "Switch to Light dossier theme" : "Switch to Obsidian dark theme"}
+              className="p-2 rounded-md border border-rule bg-paper-3 hover:bg-paper text-ink transition-colors focus-visible:outline-2 focus-visible:outline-focus"
+              title={isDark ? "Switch to light theme" : "Switch to dark theme"}
               aria-label="Toggle theme"
             >
               {isDark ? (
-                <Sun className="w-4 h-4 text-amber-400" />
+                <Sun className="w-4 h-4 text-amber-400" aria-hidden="true" />
               ) : (
-                <Moon className="w-4 h-4 text-neutral-600" />
+                <Moon className="w-4 h-4 text-muted" aria-hidden="true" />
               )}
             </button>
           </div>
@@ -289,25 +282,29 @@ export function LayoutShell({ children }: LayoutShellProps) {
         </main>
 
         {/* Editorial Footer */}
-        <footer className="border-t border-neutral-200/80 dark:border-neutral-800/80 py-6 px-6 text-center text-xs text-neutral-500 dark:text-neutral-400">
+        <footer className="border-t border-rule py-6 px-6 text-xs text-muted">
           <div className="flex flex-col sm:flex-row items-center justify-between gap-4 max-w-7xl mx-auto">
             <div className="flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-[#C8102E] animate-pulse" />
+              <span className="w-1.5 h-1.5 rounded-full bg-accent" aria-hidden="true" />
               <span>
-                CBI Special Crimes Behavioral Analytics · Running on <strong>Databricks Apps</strong> with <strong>Unity Catalog</strong>
+                CBI Serious Crimes Analytical Portal on Databricks Apps with Unity Catalog
               </span>
             </div>
-            <div className="flex items-center gap-4 text-[11px]">
-              <span>7 Seasons · 151 Episodes · CBS (2008–2015)</span>
-              <span>·</span>
+            <div className="flex items-center gap-3 text-xs">
+              <span>7 seasons</span>
+              <span className="text-muted">/</span>
+              <span>151 episodes</span>
+              <span className="text-muted">/</span>
+              <span>CBS 2008 to 2015</span>
+              <span className="text-muted">/</span>
               <a
                 href="https://www.imdb.com/title/tt1196946/"
                 target="_blank"
                 rel="noreferrer"
-                className="hover:text-[#C8102E] underline flex items-center gap-1"
+                className="hover:text-accent underline flex items-center gap-1 focus-visible:outline-2 focus-visible:outline-focus"
               >
-                IMDb tt1196946
-                <ExternalLink className="w-3 h-3" />
+                <span>IMDb tt1196946</span>
+                <ExternalLink className="w-3 h-3" aria-hidden="true" />
               </a>
             </div>
           </div>
@@ -317,42 +314,43 @@ export function LayoutShell({ children }: LayoutShellProps) {
       {/* Search Modal */}
       {searchOpen && (
         <div
-          className="fixed inset-0 z-50 flex items-start justify-center pt-20 px-4 bg-black/60 backdrop-blur-sm"
+          className="fixed inset-0 z-50 flex items-start justify-center pt-20 px-4 bg-black/70"
           onClick={() => setSearchOpen(false)}
         >
           <div
-            className="w-full max-w-xl bg-white dark:bg-[#12161F] rounded-xl shadow-2xl border border-neutral-200 dark:border-neutral-800 overflow-hidden"
+            className="w-full max-w-xl bg-paper-2 rounded-xl border border-rule overflow-hidden"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="flex items-center px-4 py-3 border-b border-neutral-200 dark:border-neutral-800">
-              <Search className="w-4 h-4 text-neutral-400 shrink-0 mr-3" />
+            <div className="flex items-center px-4 py-3 border-b border-rule">
+              <Search className="w-4 h-4 text-muted shrink-0 mr-3" aria-hidden="true" />
               <input
                 type="text"
                 autoFocus
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Search episode title, suspect, or writer..."
-                className="w-full bg-transparent border-0 focus:outline-none text-sm text-neutral-900 dark:text-neutral-100 placeholder-neutral-400"
+                placeholder="Search episode title, suspect, or writer…"
+                className="w-full bg-transparent border-0 focus:outline-none text-sm text-ink placeholder-muted"
               />
               <button
                 type="button"
                 onClick={() => setSearchOpen(false)}
-                className="p-1 rounded hover:bg-neutral-100 dark:hover:bg-neutral-800 text-neutral-400"
+                className="p-1 rounded hover:bg-paper-3 text-muted focus-visible:outline-2 focus-visible:outline-focus"
+                aria-label="Close search dialog"
               >
-                <X className="w-4 h-4" />
+                <X className="w-4 h-4" aria-hidden="true" />
               </button>
             </div>
 
             <div className="max-h-80 overflow-y-auto p-2">
               {searchQuery.trim() === "" ? (
-                <div className="p-6 text-center text-xs text-neutral-400">
-                  Type to instantly search across all 151 episodes and 14 character files.
+                <div className="p-6 text-center text-xs text-muted">
+                  Type to search across all 151 episodes and 14 character files.
                 </div>
               ) : (
                 <div className="space-y-4">
                   {filteredEpisodes.length > 0 && (
                     <div>
-                      <div className="px-2 py-1 text-[11px] font-semibold text-neutral-400 uppercase tracking-wider">
+                      <div className="px-2 py-1 text-xs font-medium text-muted">
                         Episodes
                       </div>
                       {filteredEpisodes.map((ep) => (
@@ -363,18 +361,19 @@ export function LayoutShell({ children }: LayoutShellProps) {
                             setSearchOpen(false);
                             router.push(`/episodes?season=${ep.season_no}#${ep.episode_id}`);
                           }}
-                          className="px-3 py-2 rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-800/70 cursor-pointer flex items-center justify-between transition-colors"
+                          className="px-3 py-2 rounded-md hover:bg-paper-3 cursor-pointer flex items-center justify-between transition-colors focus-visible:outline-2 focus-visible:outline-focus"
                         >
                           <div>
-                            <div className="text-sm font-semibold text-neutral-900 dark:text-neutral-100">
+                            <div className="text-sm font-medium text-ink">
                               {ep.title}
                             </div>
-                            <div className="text-xs text-neutral-500">
-                              Season {ep.season_no}, Ep {ep.episode_no} · {ep.air_date}
+                            <div className="text-xs text-muted">
+                              Season {ep.season_no}, Episode {ep.episode_no} · {ep.air_date}
                             </div>
                           </div>
-                          <span className="text-xs font-semibold text-[#C8102E]">
-                            ★ {ep.imdb_rating}
+                          <span className="text-xs font-medium text-accent flex items-center gap-1">
+                            <Star className="w-3.5 h-3.5 fill-current text-amber-500" aria-hidden="true" />
+                            <span>{ep.imdb_rating}</span>
                           </span>
                         </div>
                       ))}
@@ -383,8 +382,8 @@ export function LayoutShell({ children }: LayoutShellProps) {
 
                   {filteredCharacters.length > 0 && (
                     <div>
-                      <div className="px-2 py-1 text-[11px] font-semibold text-neutral-400 uppercase tracking-wider">
-                        Characters & Suspects
+                      <div className="px-2 py-1 text-xs font-medium text-muted">
+                        Characters and suspects
                       </div>
                       {filteredCharacters.map((char) => (
                         <div
@@ -394,7 +393,7 @@ export function LayoutShell({ children }: LayoutShellProps) {
                             setSearchOpen(false);
                             router.push(`/characters#${char.character_id}`);
                           }}
-                          className="px-3 py-2 rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-800/70 cursor-pointer flex items-center gap-3 transition-colors"
+                          className="px-3 py-2 rounded-md hover:bg-paper-3 cursor-pointer flex items-center gap-3 transition-colors focus-visible:outline-2 focus-visible:outline-focus"
                         >
                           <img
                             src={char.image_url}
@@ -402,10 +401,10 @@ export function LayoutShell({ children }: LayoutShellProps) {
                             className="w-7 h-7 rounded-full object-cover"
                           />
                           <div>
-                            <div className="text-sm font-semibold text-neutral-900 dark:text-neutral-100">
+                            <div className="text-sm font-medium text-ink">
                               {char.name}
                             </div>
-                            <div className="text-xs text-neutral-500">
+                            <div className="text-xs text-muted">
                               {char.actor} · {char.generation}
                             </div>
                           </div>
@@ -415,7 +414,7 @@ export function LayoutShell({ children }: LayoutShellProps) {
                   )}
 
                   {filteredEpisodes.length === 0 && filteredCharacters.length === 0 && (
-                    <div className="p-6 text-center text-xs text-neutral-400">
+                    <div className="p-6 text-center text-xs text-muted">
                       No case matches found for "{searchQuery}".
                     </div>
                   )}

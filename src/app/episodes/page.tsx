@@ -1,21 +1,13 @@
 "use client";
 
 import React, { useState, useMemo } from "react";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import {
   Star,
-  Users,
   Search,
   ArrowUpDown,
   Calendar,
-  User,
-  Film,
   ChevronRight,
-  Filter,
-  CheckCircle2,
-  Sparkles,
-  Maximize2,
   X,
 } from "lucide-react";
 import { SEASONS, EPISODES, EpisodeData } from "@/src/data/mentalist-data";
@@ -73,28 +65,20 @@ export default function EpisodesPage() {
   const currentSeasonData = SEASONS.find((s) => s.season_no === selectedSeason) || SEASONS[0];
 
   return (
-    <div className="space-y-8 animate-fadeIn">
+    <div className="space-y-8">
       {/* Header Bar */}
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
         <div>
-          <div className="flex items-center gap-2 mb-1">
-            <span className="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-[#C8102E] text-white">
-              CBI INVESTIGATION LOGS
-            </span>
-            <span className="text-xs text-neutral-400">
-              Season {selectedSeason} of 7 · {currentSeasonData.year_start}–{currentSeasonData.year_end}
-            </span>
-          </div>
-          <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-neutral-900 dark:text-white font-heading">
+          <h1 className="text-3xl sm:text-4xl font-semibold tracking-tight text-ink">
             Episodes Explorer
           </h1>
-          <p className="text-xs sm:text-sm text-neutral-500 dark:text-neutral-400 font-body">
-            Nielsen audience ratings, screenplay credits, and case synopses for all 151 episodes
+          <p className="mt-2 text-sm text-muted">
+            Season {selectedSeason} of 7 ({currentSeasonData.year_start} to {currentSeasonData.year_end}). Nielsen audience ratings, screenplay credits, and case synopses for all 151 episodes.
           </p>
         </div>
 
         {/* Season Segmented Tabs */}
-        <div className="flex items-center gap-1.5 p-1.5 rounded-xl border border-neutral-200/80 dark:border-neutral-800/80 bg-white/70 dark:bg-[#12161F]/70 backdrop-blur-sm overflow-x-auto">
+        <div className="flex items-center gap-1 p-1 rounded-lg border border-rule bg-paper-2 overflow-x-auto">
           {SEASONS.map((s) => {
             const isActive = s.season_no === selectedSeason;
             return (
@@ -105,10 +89,10 @@ export default function EpisodesPage() {
                   sound.tab();
                   setSelectedSeason(s.season_no);
                 }}
-                className={`px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-all duration-150 cursor-pointer ${
+                className={`px-3 py-1.5 rounded-md text-xs font-medium whitespace-nowrap transition-colors duration-150 active:opacity-85 disabled:opacity-40 focus-visible:outline focus-visible:outline-2 focus-visible:outline-focus cursor-pointer ${
                   isActive
-                    ? "bg-[#C8102E] text-white shadow-sm"
-                    : "text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-100 hover:bg-neutral-100 dark:hover:bg-neutral-800/50"
+                    ? "bg-accent text-accent-ink shadow-sm"
+                    : "text-muted hover:text-ink"
                 }`}
               >
                 Season 0{s.season_no}
@@ -118,31 +102,31 @@ export default function EpisodesPage() {
         </div>
       </div>
 
-      {/* Interactive SVG Bar Chart Section */}
-      <div className="p-6 rounded-2xl border border-neutral-200/80 dark:border-neutral-800/80 bg-white/70 dark:bg-[#10141D]/80 backdrop-blur-md shadow-sm space-y-4">
+      {/* Interactive Bar Chart Section */}
+      <div className="p-6 rounded-xl border border-rule bg-paper-2 shadow-sm space-y-4">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
           <div>
-            <h3 className="text-lg font-bold text-neutral-900 dark:text-white font-heading">
-              Season 0{selectedSeason} · Viewership & IMDb Spectrum
-            </h3>
-            <p className="text-xs text-neutral-500 dark:text-neutral-400">
-              Interactive bar heights reflect US Viewers (M). Hover or click any bar for episode metrics.
+            <h2 className="text-base font-semibold text-ink">
+              Season 0{selectedSeason}: Viewership & Rating Trajectory
+            </h2>
+            <p className="text-xs text-muted">
+              Bar heights reflect US viewers in millions. Select any bar to open that episode’s investigative dossier.
             </p>
           </div>
 
           {topRatedEp && (
-            <div className="flex items-center gap-2 text-xs font-semibold text-neutral-700 dark:text-neutral-300">
-              <span className="w-2.5 h-2.5 rounded-full bg-[#C8102E]" />
+            <div className="flex items-center gap-2 text-xs font-medium text-ink-2">
+              <span className="w-2.5 h-2.5 rounded-full bg-accent" aria-hidden="true" />
               <span>
-                Season Apex: <strong>{topRatedEp.title}</strong> ({topRatedEp.imdb_rating} ★)
+                Season Apex: <strong className="font-semibold text-ink">{topRatedEp.title}</strong> ({topRatedEp.imdb_rating} / 10)
               </span>
             </div>
           )}
         </div>
 
-        {/* SVG Chart Canvas */}
+        {/* Bar Chart Canvas */}
         <div className="relative pt-4 pb-2">
-          <div className="flex items-end gap-1.5 sm:gap-2 h-44 sm:h-52 w-full border-b border-neutral-200 dark:border-neutral-800">
+          <div className="flex items-end gap-1.5 sm:gap-2 h-44 sm:h-52 w-full border-b border-rule">
             {seasonEpisodes.map((ep) => {
               const heightPct = Math.max(12, Math.round((ep.us_viewers_m / maxViewers) * 100));
               const isTop = topRatedEp?.episode_id === ep.episode_id;
@@ -159,20 +143,18 @@ export default function EpisodesPage() {
                     setActiveModalEp(ep);
                   }}
                 >
-                  {/* The Bar */}
                   <div
                     style={{ height: `${heightPct}%` }}
-                    className={`w-full max-w-[28px] rounded-t transition-all duration-200 ${
+                    className={`w-full max-w-[28px] rounded-t transition-colors duration-150 ${
                       isTop
-                        ? "bg-[#C8102E] shadow-sm ring-2 ring-[#C8102E]/40"
+                        ? "bg-accent"
                         : isHovered
-                        ? "bg-neutral-800 dark:bg-neutral-300"
-                        : "bg-neutral-300 dark:bg-neutral-700 hover:bg-neutral-400 dark:hover:bg-neutral-600"
+                        ? "bg-ink-2"
+                        : "bg-paper-3 hover:bg-muted"
                     }`}
                   />
 
-                  {/* Ep Number Label below */}
-                  <span className="text-[10px] font-mono mt-1 text-neutral-400 group-hover:text-[#C8102E] font-medium">
+                  <span className="text-xs mt-1 text-muted group-hover:text-accent font-medium tabular-nums">
                     E{ep.episode_no}
                   </span>
                 </div>
@@ -182,20 +164,20 @@ export default function EpisodesPage() {
 
           {/* Crosshair Hover Tooltip */}
           {hoveredBar && (
-            <div className="mt-3 p-3 rounded-xl bg-neutral-900 text-white dark:bg-neutral-800 text-xs flex flex-wrap items-center justify-between gap-3 shadow-lg border border-neutral-700 animate-fadeIn">
+            <div className="mt-3 p-3 rounded-lg bg-paper-3 text-ink text-xs flex flex-wrap items-center justify-between gap-3 shadow-md border border-rule">
               <div className="flex items-center gap-2">
-                <span className="px-2 py-0.5 rounded bg-[#C8102E] text-[10px] font-bold">
-                  S{hoveredBar.season_no} · E{hoveredBar.episode_no}
+                <span className="px-2 py-0.5 rounded bg-accent text-accent-ink text-xs font-semibold tabular-nums">
+                  Season {hoveredBar.season_no}, Episode {hoveredBar.episode_no}
                 </span>
-                <span className="font-semibold text-sm">{hoveredBar.title}</span>
-                <span className="text-neutral-400">({hoveredBar.air_date})</span>
+                <span className="font-semibold">{hoveredBar.title}</span>
+                <span className="text-muted">({hoveredBar.air_date})</span>
               </div>
-              <div className="flex items-center gap-4 text-xs font-mono">
-                <span className="text-amber-400 flex items-center gap-1">
-                  <Star className="w-3.5 h-3.5 fill-current" />
+              <div className="flex items-center gap-4 text-xs">
+                <span className="text-amber-400 flex items-center gap-1 tabular-nums">
+                  <Star className="w-3.5 h-3.5 fill-current" aria-hidden="true" />
                   {hoveredBar.imdb_rating} / 10 ({hoveredBar.imdb_votes.toLocaleString()} votes)
                 </span>
-                <span className="text-neutral-300">
+                <span className="text-muted tabular-nums">
                   {hoveredBar.us_viewers_m}M Viewers
                 </span>
                 <button
@@ -204,9 +186,9 @@ export default function EpisodesPage() {
                     sound.click();
                     setActiveModalEp(hoveredBar);
                   }}
-                  className="underline text-[#C8102E] hover:text-red-400 font-sans"
+                  className="text-accent hover:underline font-medium cursor-pointer active:opacity-85 disabled:opacity-40 focus-visible:outline focus-visible:outline-2 focus-visible:outline-focus"
                 >
-                  View Dossier →
+                  View dossier
                 </button>
               </div>
             </div>
@@ -218,20 +200,20 @@ export default function EpisodesPage() {
       <div className="flex flex-col sm:flex-row items-center justify-between gap-3 pt-2">
         {/* Search */}
         <div className="relative w-full sm:w-72">
-          <Search className="w-4 h-4 text-neutral-400 absolute left-3 top-2.5" />
+          <Search className="w-4 h-4 text-muted absolute left-3 top-2.5" aria-hidden="true" />
           <input
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search by title, writer, director..."
-            className="w-full pl-9 pr-3 py-1.5 text-xs rounded-xl border border-neutral-200/80 dark:border-neutral-800/80 bg-white/70 dark:bg-[#12161F]/70 focus:outline-none focus:ring-2 focus:ring-[#C8102E] text-neutral-900 dark:text-white"
+            className="w-full pl-9 pr-3 py-1.5 text-xs rounded-lg border border-rule bg-paper-2 text-ink placeholder:text-muted focus-visible:outline focus-visible:outline-2 focus-visible:outline-focus disabled:opacity-40"
           />
         </div>
 
         {/* Sorting Buttons */}
         <div className="flex items-center gap-1.5 w-full sm:w-auto">
-          <span className="text-xs text-neutral-400 mr-1 flex items-center gap-1">
-            <ArrowUpDown className="w-3 h-3" /> Sort:
+          <span className="text-xs text-muted mr-1 flex items-center gap-1">
+            <ArrowUpDown className="w-3 h-3" aria-hidden="true" /> Sort:
           </span>
           <button
             type="button"
@@ -239,10 +221,10 @@ export default function EpisodesPage() {
               sound.click();
               setSortMode("order");
             }}
-            className={`px-3 py-1 text-xs font-medium rounded-lg transition-colors cursor-pointer ${
+            className={`px-3 py-1 text-xs font-medium rounded-md transition-colors duration-150 active:opacity-85 disabled:opacity-40 focus-visible:outline focus-visible:outline-2 focus-visible:outline-focus cursor-pointer ${
               sortMode === "order"
-                ? "bg-neutral-800 dark:bg-white text-white dark:text-neutral-900 font-semibold"
-                : "border border-neutral-200 dark:border-neutral-800 text-neutral-600 dark:text-neutral-400 hover:bg-neutral-100 dark:hover:bg-neutral-800"
+                ? "bg-accent text-accent-ink"
+                : "border border-rule text-muted hover:text-ink bg-paper-2"
             }`}
           >
             Air Order
@@ -253,10 +235,10 @@ export default function EpisodesPage() {
               sound.click();
               setSortMode("highest");
             }}
-            className={`px-3 py-1 text-xs font-medium rounded-lg transition-colors cursor-pointer ${
+            className={`px-3 py-1 text-xs font-medium rounded-md transition-colors duration-150 active:opacity-85 disabled:opacity-40 focus-visible:outline focus-visible:outline-2 focus-visible:outline-focus cursor-pointer ${
               sortMode === "highest"
-                ? "bg-neutral-800 dark:bg-white text-white dark:text-neutral-900 font-semibold"
-                : "border border-neutral-200 dark:border-neutral-800 text-neutral-600 dark:text-neutral-400 hover:bg-neutral-100 dark:hover:bg-neutral-800"
+                ? "bg-accent text-accent-ink"
+                : "border border-rule text-muted hover:text-ink bg-paper-2"
             }`}
           >
             Highest Rated
@@ -267,10 +249,10 @@ export default function EpisodesPage() {
               sound.click();
               setSortMode("watched");
             }}
-            className={`px-3 py-1 text-xs font-medium rounded-lg transition-colors cursor-pointer ${
+            className={`px-3 py-1 text-xs font-medium rounded-md transition-colors duration-150 active:opacity-85 disabled:opacity-40 focus-visible:outline focus-visible:outline-2 focus-visible:outline-focus cursor-pointer ${
               sortMode === "watched"
-                ? "bg-neutral-800 dark:bg-white text-white dark:text-neutral-900 font-semibold"
-                : "border border-neutral-200 dark:border-neutral-800 text-neutral-600 dark:text-neutral-400 hover:bg-neutral-100 dark:hover:bg-neutral-800"
+                ? "bg-accent text-accent-ink"
+                : "border border-rule text-muted hover:text-ink bg-paper-2"
             }`}
           >
             Most Watched
@@ -291,53 +273,53 @@ export default function EpisodesPage() {
                 sound.click();
                 setActiveModalEp(ep);
               }}
-              className="p-5 rounded-xl border border-neutral-200/80 dark:border-neutral-800/80 bg-white/70 dark:bg-[#12161F]/70 backdrop-blur-sm shadow-sm hover:border-[#C8102E]/60 hover:shadow-md cursor-pointer transition-all duration-200 flex flex-col justify-between group"
+              className="p-5 rounded-xl border border-rule bg-paper-2 shadow-sm hover:border-accent transition-colors duration-150 cursor-pointer flex flex-col justify-between group"
             >
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
-                  <span className="px-2 py-0.5 rounded bg-neutral-100 dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300 font-mono text-xs font-bold">
-                    S0{ep.season_no} · E{ep.episode_no < 10 ? `0${ep.episode_no}` : ep.episode_no}
+                  <span className="px-2 py-0.5 rounded bg-paper-3 text-muted text-xs font-medium tabular-nums">
+                    Season {ep.season_no}, Episode {ep.episode_no}
                   </span>
-                  <div className="flex items-center gap-1 text-xs font-bold text-amber-500">
-                    <Star className="w-3.5 h-3.5 fill-current" />
+                  <div className="flex items-center gap-1 text-xs font-semibold text-amber-500 tabular-nums">
+                    <Star className="w-3.5 h-3.5 fill-current" aria-hidden="true" />
                     <span>{ep.imdb_rating}</span>
                   </div>
                 </div>
 
-                <h3 className="text-lg font-bold text-neutral-900 dark:text-white group-hover:text-[#C8102E] transition-colors font-heading leading-tight">
+                <h3 className="text-base font-semibold text-ink group-hover:text-accent transition-colors duration-150 leading-tight">
                   {ep.title}
                 </h3>
 
-                <div className="flex items-center gap-2 text-xs text-neutral-400">
-                  <Calendar className="w-3 h-3" />
+                <div className="flex items-center gap-2 text-xs text-muted">
+                  <Calendar className="w-3 h-3 shrink-0" aria-hidden="true" />
                   <span>{ep.air_date}</span>
-                  <span>·</span>
-                  <span>#{ep.overall_no} Overall</span>
+                  <span className="text-muted/60">/</span>
+                  <span className="tabular-nums">Episode #{ep.overall_no} of 151</span>
                 </div>
 
-                <p className="text-xs text-neutral-600 dark:text-neutral-400 line-clamp-3 leading-relaxed pt-1">
+                <p className="text-xs text-muted line-clamp-3 leading-relaxed pt-1">
                   {ep.synopsis}
                 </p>
               </div>
 
               {/* Viewership bar & Credits */}
-              <div className="pt-4 mt-3 border-t border-neutral-100 dark:border-neutral-800/70 space-y-2">
+              <div className="pt-4 mt-3 border-t border-rule space-y-2">
                 <div>
-                  <div className="flex items-center justify-between text-[11px] text-neutral-500 mb-1">
+                  <div className="flex items-center justify-between text-xs text-muted mb-1 tabular-nums">
                     <span>US Viewers: {ep.us_viewers_m}M</span>
                     <span>Season Max: {maxViewers}M</span>
                   </div>
-                  <div className="w-full h-1.5 bg-neutral-200 dark:bg-neutral-800 rounded-full overflow-hidden">
+                  <div className="w-full h-1.5 bg-paper-3 rounded-full overflow-hidden border border-rule">
                     <div
                       style={{ width: `${viewerBarPct}%` }}
                       className={`h-full rounded-full ${
-                        isTop ? "bg-[#C8102E]" : "bg-neutral-400 dark:bg-neutral-500"
+                        isTop ? "bg-accent" : "bg-muted"
                       }`}
                     />
                   </div>
                 </div>
 
-                <div className="flex items-center justify-between text-[10px] text-neutral-400 pt-1">
+                <div className="flex items-center justify-between text-xs text-muted pt-1">
                   <span className="truncate max-w-[140px]">Dir: {ep.directed_by}</span>
                   <span className="truncate max-w-[140px]">Writ: {ep.written_by}</span>
                 </div>
@@ -350,34 +332,35 @@ export default function EpisodesPage() {
       {/* Episode Detail Dossier Lightbox Modal */}
       {activeModalEp && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm animate-fadeIn"
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80"
           onClick={() => setActiveModalEp(null)}
         >
           <div
-            className="w-full max-w-2xl bg-white dark:bg-[#12161F] rounded-2xl shadow-2xl border border-neutral-200 dark:border-neutral-800 overflow-hidden"
+            className="w-full max-w-2xl bg-paper-2 rounded-xl border border-rule shadow-lg overflow-hidden"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Modal Header */}
-            <div className="p-6 bg-neutral-50 dark:bg-neutral-900 border-b border-neutral-200 dark:border-neutral-800 flex items-start justify-between">
+            <div className="p-6 bg-paper-3 border-b border-rule flex items-start justify-between">
               <div>
                 <div className="flex items-center gap-2 mb-1">
-                  <span className="px-2 py-0.5 rounded bg-[#C8102E] text-white text-[11px] font-bold">
-                    S0{activeModalEp.season_no} · E{activeModalEp.episode_no}
+                  <span className="px-2 py-0.5 rounded bg-accent text-accent-ink text-xs font-semibold tabular-nums">
+                    Season {activeModalEp.season_no}, Episode {activeModalEp.episode_no}
                   </span>
-                  <span className="text-xs text-neutral-500">
-                    Overall #{activeModalEp.overall_no} · {activeModalEp.air_date}
+                  <span className="text-xs text-muted tabular-nums">
+                    Episode #{activeModalEp.overall_no} of 151, {activeModalEp.air_date}
                   </span>
                 </div>
-                <h2 className="text-2xl font-bold text-neutral-900 dark:text-white font-heading">
+                <h2 className="text-2xl font-semibold text-ink">
                   {activeModalEp.title}
                 </h2>
               </div>
               <button
                 type="button"
                 onClick={() => setActiveModalEp(null)}
-                className="p-1.5 rounded-lg hover:bg-neutral-200 dark:hover:bg-neutral-800 text-neutral-500 cursor-pointer"
+                className="p-1.5 rounded-md hover:bg-paper text-muted hover:text-ink active:opacity-85 disabled:opacity-40 focus-visible:outline focus-visible:outline-2 focus-visible:outline-focus transition-colors duration-150 cursor-pointer"
+                aria-label="Close episode modal"
               >
-                <X className="w-5 h-5" />
+                <X className="w-5 h-5" aria-hidden="true" />
               </button>
             </div>
 
@@ -385,43 +368,43 @@ export default function EpisodesPage() {
             <div className="p-6 space-y-6 max-h-[70vh] overflow-y-auto">
               {/* 4 Performance Metric Badges */}
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                <div className="p-3 rounded-xl bg-neutral-100 dark:bg-neutral-800/60 text-center">
-                  <span className="text-[10px] text-neutral-400 uppercase font-semibold block">
-                    IMDb Rating
+                <div className="p-3 rounded-lg bg-paper border border-rule text-center">
+                  <span className="text-xs text-muted block">
+                    IMDb rating
                   </span>
-                  <span className="text-xl font-bold text-amber-500 flex items-center justify-center gap-1 font-heading">
-                    <Star className="w-4 h-4 fill-current" />
+                  <span className="text-xl font-semibold text-amber-500 flex items-center justify-center gap-1 mt-1 tabular-nums">
+                    <Star className="w-4 h-4 fill-current" aria-hidden="true" />
                     {activeModalEp.imdb_rating}
                   </span>
-                  <span className="text-[10px] text-neutral-400">
+                  <span className="text-xs text-muted tabular-nums">
                     {activeModalEp.imdb_votes.toLocaleString()} votes
                   </span>
                 </div>
 
-                <div className="p-3 rounded-xl bg-neutral-100 dark:bg-neutral-800/60 text-center">
-                  <span className="text-[10px] text-neutral-400 uppercase font-semibold block">
-                    US Audience
+                <div className="p-3 rounded-lg bg-paper border border-rule text-center">
+                  <span className="text-xs text-muted block">
+                    US audience
                   </span>
-                  <span className="text-xl font-bold text-neutral-900 dark:text-white font-heading">
+                  <span className="text-xl font-semibold text-ink mt-1 block tabular-nums">
                     {activeModalEp.us_viewers_m}M
                   </span>
-                  <span className="text-[10px] text-neutral-400">Nielsen Live+SD</span>
+                  <span className="text-xs text-muted">Nielsen Live+SD</span>
                 </div>
 
-                <div className="p-3 rounded-xl bg-neutral-100 dark:bg-neutral-800/60 text-center">
-                  <span className="text-[10px] text-neutral-400 uppercase font-semibold block">
+                <div className="p-3 rounded-lg bg-paper border border-rule text-center">
+                  <span className="text-xs text-muted block">
                     Director
                   </span>
-                  <span className="text-xs font-bold text-neutral-800 dark:text-neutral-200 truncate block mt-1">
+                  <span className="text-xs font-semibold text-ink truncate block mt-1">
                     {activeModalEp.directed_by}
                   </span>
                 </div>
 
-                <div className="p-3 rounded-xl bg-neutral-100 dark:bg-neutral-800/60 text-center">
-                  <span className="text-[10px] text-neutral-400 uppercase font-semibold block">
+                <div className="p-3 rounded-lg bg-paper border border-rule text-center">
+                  <span className="text-xs text-muted block">
                     Screenplay
                   </span>
-                  <span className="text-xs font-bold text-neutral-800 dark:text-neutral-200 truncate block mt-1">
+                  <span className="text-xs font-semibold text-ink truncate block mt-1">
                     {activeModalEp.written_by}
                   </span>
                 </div>
@@ -429,32 +412,32 @@ export default function EpisodesPage() {
 
               {/* Synopsis */}
               <div className="space-y-2">
-                <h4 className="text-xs font-bold uppercase tracking-wider text-neutral-400">
-                  Case Synopsis & Behavioral Analysis
-                </h4>
-                <p className="text-sm text-neutral-700 dark:text-neutral-300 leading-relaxed">
+                <h3 className="text-xs font-semibold text-ink-2">
+                  Case Synopsis and Behavioral Analysis
+                </h3>
+                <p className="text-xs text-muted leading-relaxed">
                   {activeModalEp.synopsis}
                 </p>
               </div>
 
               {/* Action Buttons */}
-              <div className="flex items-center justify-between pt-4 border-t border-neutral-200 dark:border-neutral-800">
+              <div className="flex items-center justify-between pt-4 border-t border-rule">
                 <button
                   type="button"
                   onClick={() => {
                     sound.click();
                     router.push(`/compare?epA=${activeModalEp.episode_id}`);
                   }}
-                  className="px-4 py-2 rounded-xl border border-neutral-300 dark:border-neutral-700 hover:bg-neutral-100 dark:hover:bg-neutral-800 text-xs font-semibold text-neutral-700 dark:text-neutral-200 flex items-center gap-2 cursor-pointer"
+                  className="px-4 py-2 rounded-lg border border-rule hover:border-accent text-xs font-semibold text-ink flex items-center gap-2 whitespace-nowrap active:opacity-85 disabled:opacity-40 focus-visible:outline focus-visible:outline-2 focus-visible:outline-focus transition-colors duration-150 cursor-pointer"
                 >
-                  <span>Compare with another episode</span>
-                  <ChevronRight className="w-3.5 h-3.5" />
+                  <span>Compare episode</span>
+                  <ChevronRight className="w-3.5 h-3.5" aria-hidden="true" />
                 </button>
 
                 <button
                   type="button"
                   onClick={() => setActiveModalEp(null)}
-                  className="px-5 py-2 rounded-xl bg-[#C8102E] hover:bg-red-700 text-white text-xs font-semibold cursor-pointer"
+                  className="px-5 py-2 rounded-lg bg-accent text-accent-ink text-xs font-semibold active:opacity-85 disabled:opacity-40 focus-visible:outline focus-visible:outline-2 focus-visible:outline-focus transition-colors duration-150 cursor-pointer"
                 >
                   Close Dossier
                 </button>
