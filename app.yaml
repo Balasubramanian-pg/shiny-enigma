@@ -3,7 +3,7 @@ name: "mentalist-explorer"
 description: "Editorial analytics app for The Mentalist running on Databricks Apps and Unity Catalog"
 command:
   - "uvicorn"
-  - "app.main:app"
+  - "backend.main:app"
   - "--host"
   - "0.0.0.0"
   - "--port"

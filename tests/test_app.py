@@ -6,8 +6,8 @@ from fastapi.testclient import TestClient
 import os
 import sys
 
-# Ensure app path is accessible
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "app")))
+# Ensure backend path is accessible
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "backend")))
 from main import app, DATA_CACHE, load_data
 
 @pytest.fixture(scope="module", autouse=True)

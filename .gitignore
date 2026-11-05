@@ -9,3 +9,5 @@ venv/
 *.log
 node_modules/
 *.tsbuildinfo
+.next/
+out/

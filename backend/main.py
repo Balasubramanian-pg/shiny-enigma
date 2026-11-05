@@ -4,12 +4,18 @@ FastAPI Backend with Dual-Mode Data Layer (Databricks Unity Catalog + Local Fall
 import os
 import csv
 from typing import List, Dict, Any, Optional
+from contextlib import asynccontextmanager
 from fastapi import FastAPI, Request, Query, HTTPException
 from fastapi.responses import HTMLResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 
-app = FastAPI(title="The Mentalist Explorer", version="1.0.0")
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    load_data()
+    yield
+
+app = FastAPI(title="The Mentalist Explorer", version="1.0.0", lifespan=lifespan)
 
 # Setup directories
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -17,8 +23,17 @@ PROJECT_ROOT = os.path.dirname(BASE_DIR)
 TEMPLATES_DIR = os.path.join(BASE_DIR, "templates")
 STATIC_DIR = os.path.join(BASE_DIR, "static")
 DATA_DIR = os.path.join(PROJECT_ROOT, "data")
+OUT_DIR = os.path.join(PROJECT_ROOT, "out")
 
 app.mount("/static", StaticFiles(directory=STATIC_DIR), name="static")
+
+# Mount React 19 Next.js export if present
+if os.path.exists(OUT_DIR):
+    next_static = os.path.join(OUT_DIR, "_next")
+    if os.path.exists(next_static):
+        app.mount("/_next", StaticFiles(directory=next_static), name="next_static")
+    app.mount("/react", StaticFiles(directory=OUT_DIR, html=True), name="react_app")
+
 templates = Jinja2Templates(directory=TEMPLATES_DIR)
 
 # -----------------------------------------------------------------------------
@@ -106,9 +121,6 @@ def load_data():
 
     print(f"Loaded {len(DATA_CACHE['episodes'])} episodes across {len(DATA_CACHE['seasons'])} seasons.")
 
-@app.on_event("startup")
-def startup_event():
-    load_data()
 
 # -----------------------------------------------------------------------------
 # HELPERS
@@ -165,7 +177,7 @@ async def home(request: Request):
         "milestones": milestones,
         "characters": DATA_CACHE["characters"][:14]
     })
-    return templates.TemplateResponse("home.html", {"request": request, **ctx})
+    return templates.TemplateResponse(request=request, name="home.html", context=ctx)
 
 @app.get("/episodes", response_class=HTMLResponse)
 async def episodes_view(
@@ -218,7 +230,7 @@ async def episodes_view(
         "most_watched_ep": most_watched_ep,
         "max_viewers": max_viewers
     })
-    return templates.TemplateResponse("episodes.html", {"request": request, **ctx})
+    return templates.TemplateResponse(request=request, name="episodes.html", context=ctx)
 
 @app.get("/episodes/{episode_id}", response_class=HTMLResponse)
 async def episode_detail(request: Request, episode_id: str):
@@ -260,7 +272,7 @@ async def episode_detail(request: Request, episode_id: str):
         "prev_ep": prev_ep,
         "next_ep": next_ep
     })
-    return templates.TemplateResponse("episode_detail.html", {"request": request, **ctx})
+    return templates.TemplateResponse(request=request, name="episode_detail.html", context=ctx)
 
 @app.get("/compare", response_class=HTMLResponse)
 async def compare_episodes(
@@ -320,7 +332,7 @@ async def compare_episodes(
         "ep2": episode_2,
         "scorecard": scorecard
     })
-    return templates.TemplateResponse("compare.html", {"request": request, **ctx})
+    return templates.TemplateResponse(request=request, name="compare.html", context=ctx)
 
 @app.get("/characters", response_class=HTMLResponse)
 async def characters_view(request: Request):
@@ -339,7 +351,7 @@ async def characters_view(request: Request):
         "households": households,
         "all_characters": DATA_CACHE["characters"]
     })
-    return templates.TemplateResponse("characters.html", {"request": request, **ctx})
+    return templates.TemplateResponse(request=request, name="characters.html", context=ctx)
 
 @app.get("/awards", response_class=HTMLResponse)
 async def awards_view(request: Request, tab: str = Query("all")):
@@ -381,7 +393,7 @@ async def awards_view(request: Request, tab: str = Query("all")):
         "acting_honors": acting_honors,
         "tab": tab
     })
-    return templates.TemplateResponse("awards.html", {"request": request, **ctx})
+    return templates.TemplateResponse(request=request, name="awards.html", context=ctx)
 
 @app.get("/about", response_class=HTMLResponse)
 async def about_view(request: Request):
@@ -492,17 +504,45 @@ Ref: episodes.episode_id < awards.episode_id
             "volume_path": "/Volumes/main/tvshows/images"
         }
     })
-    return templates.TemplateResponse("about.html", {"request": request, **ctx})
+    return templates.TemplateResponse(request=request, name="about.html", context=ctx)
 
 @app.get("/contact", response_class=HTMLResponse)
 async def contact_view(request: Request):
     """Contact & feedback view."""
     ctx = get_global_context("contact")
-    return templates.TemplateResponse("contact.html", {"request": request, **ctx})
+    return templates.TemplateResponse(request=request, name="contact.html", context=ctx)
 
 # -----------------------------------------------------------------------------
 # API ENDPOINTS
 # -----------------------------------------------------------------------------
+@app.get("/api/show")
+async def api_show():
+    """Returns show master metadata."""
+    return JSONResponse(content=DATA_CACHE["show"])
+
+@app.get("/api/seasons")
+async def api_seasons():
+    """Returns all 7 seasons metadata."""
+    return JSONResponse(content=DATA_CACHE["seasons"])
+
+@app.get("/api/episodes")
+async def api_episodes(season: Optional[int] = None):
+    """Returns episodes with optional season query filter."""
+    eps = DATA_CACHE["episodes"]
+    if season:
+        eps = [e for e in eps if e["season_no"] == season]
+    return JSONResponse(content=eps)
+
+@app.get("/api/characters")
+async def api_characters():
+    """Returns character dossiers."""
+    return JSONResponse(content=DATA_CACHE["characters"])
+
+@app.get("/api/awards")
+async def api_awards():
+    """Returns awards registry."""
+    return JSONResponse(content=DATA_CACHE["awards"])
+
 @app.get("/api/search")
 async def api_search(q: str = Query("", min_length=1)):
     """Full-text search across episodes, characters, and writers."""
@@ -521,4 +561,4 @@ async def api_search(q: str = Query("", min_length=1)):
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)
+    uvicorn.run("backend.main:app", host="0.0.0.0", port=8000, reload=True)

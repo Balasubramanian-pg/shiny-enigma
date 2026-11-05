@@ -102,37 +102,35 @@ Integrated in `src/components/ui/` with TypeScript and Tailwind CSS:
 
 ---
 
-## 🚀 Running Locally or via GitHub Actions
+## 🚀 React 19 / Next.js Full Architecture (Option B)
 
-### 1. Run Python Local Server
+The application features a complete **React 19 / Next.js / Framer Motion / Tailwind CSS** architecture in `src/app/`, alongside the FastAPI server:
+
+* **Framework:** React 19 + Next.js App Router (Turbopack) with static site pre-rendering (160 routes compiled).
+* **Core Components:**
+  * `src/components/ui/responsive-sidebar.tsx`: Accessible responsive navigation sidebar with backdrop overlay and Lucide icons.
+  * `src/components/ui/expandable-gallery.tsx`: Accordion character dossier gallery with modal lightbox zoom.
+  * `lib/sound.ts`: Sub-millisecond tactile Web Audio micro-haptics engine (crisp clicks, view transitions, confetti chimes).
+* **Typography:** Afacad Semibold (headings) and Afacad Normal Light (body) loaded via Google Fonts.
+* **Aesthetics:** CBI Casebook investigative materiality with Red John Blood-Red (`#C8102E`) accents, obsidian slate, zero emojis, and live motion DBML canvas.
+
+### Running the App:
+
 ```bash
-# Install dependencies
-pip install -r requirements.txt
+# 1. Run Next.js React 19 Development Server
+npm run dev
 
-# Start the application
-python -m uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
-```
-Open **[http://localhost:8000](http://localhost:8000)** in your browser.
+# 2. Build the production React 19 application (generates 160 pre-rendered pages in out/)
+npm run build
 
-### 2. Run Automated Verification Tests
-```bash
-python -c "
-import sys, os
-sys.path.insert(0, os.path.abspath('app'))
-from main import app, DATA_CACHE, load_data
-from fastapi.testclient import TestClient
+# 3. Type checking
+npm run check-types
 
-load_data()
-client = TestClient(app)
-for path in ['/', '/episodes', '/episodes/tm_s06e08', '/compare', '/characters', '/awards', '/about']:
-    assert client.get(path).status_code == 200
-print('All endpoints verified!')
-"
-```
+# 4. Run FastAPI Backend (Serves API routes + React 19 App at /react/ + fallback Jinja)
+python -m uvicorn backend.main:app --host 0.0.0.0 --port 8000 --reload
 
-### 3. Verify TypeScript Components
-```bash
-npx tsc --noEmit
+# 5. Run Backend Pytest Suite
+python -m pytest tests/
 ```
 
 ---
