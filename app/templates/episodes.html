@@ -1,0 +1,154 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div style="margin-bottom: 1.5rem;">
+  <div style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0.25rem;">151 episodes across 7 seasons</div>
+  <h1 style="font-size: 2.2rem; font-weight: 700; letter-spacing: -0.02em;">Episodes</h1>
+</div>
+
+<!-- SEASON SELECTOR TABS -->
+<div class="season-tabs">
+  {% for s in all_seasons %}
+  <a href="/episodes?season={{ s.season_no }}&sort={{ sort }}" 
+     class="season-tab {% if s.season_no == selected_season_no %}active{% endif %}">
+    Season {{ s.season_no }} <span style="font-size: 0.72rem; opacity: 0.8;">({{ s.year_start }})</span>
+  </a>
+  {% endfor %}
+</div>
+
+<!-- SEASON SUMMARY HEADER -->
+<div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 0.75rem;">
+  <h2 style="font-size: 1.5rem; font-weight: 700;">Season {{ selected_season.season_no }}</h2>
+  <span style="font-size: 0.8rem; color: var(--text-muted);">
+    {{ selected_season.premiere_date }} to {{ selected_season.finale_date }} · {{ selected_season.episode_count }} episodes
+  </span>
+</div>
+<p style="font-size: 0.92rem; color: var(--text-secondary); line-height: 1.6; max-width: 800px; margin-bottom: 2rem;">
+  {{ selected_season.synopsis }}
+</p>
+
+<!-- SORTING BUTTONS & EPISODES SPLIT LAYOUT -->
+<div style="margin-bottom: 1.25rem; display: flex; gap: 1rem; border-bottom: 1px solid var(--border-subtle); padding-bottom: 0.5rem;">
+  <a href="/episodes?season={{ selected_season_no }}&sort=order" 
+     style="font-size: 0.85rem; font-weight: 600; padding-bottom: 0.5rem; {% if sort == 'order' %}color: var(--accent-primary); border-bottom: 2px solid var(--accent-primary);{% else %}color: var(--text-muted);{% endif %}">
+    Episode order
+  </a>
+  <a href="/episodes?season={{ selected_season_no }}&sort=highest" 
+     style="font-size: 0.85rem; font-weight: 600; padding-bottom: 0.5rem; {% if sort == 'highest' %}color: var(--accent-primary); border-bottom: 2px solid var(--accent-primary);{% else %}color: var(--text-muted);{% endif %}">
+    Highest rated
+  </a>
+  <a href="/episodes?season={{ selected_season_no }}&sort=watched" 
+     style="font-size: 0.85rem; font-weight: 600; padding-bottom: 0.5rem; {% if sort == 'watched' %}color: var(--accent-primary); border-bottom: 2px solid var(--accent-primary);{% else %}color: var(--text-muted);{% endif %}">
+    Most watched
+  </a>
+</div>
+
+<div class="episodes-split-layout">
+  <!-- LEFT: EPISODE TABLE -->
+  <div>
+    <table class="episode-table">
+      <thead>
+        <tr style="font-size: 0.72rem; color: var(--text-muted); text-transform: uppercase; text-align: left; border-bottom: 1px solid var(--border-subtle);">
+          <th style="padding: 0.5rem;">#</th>
+          <th style="padding: 0.5rem;">Episode</th>
+          <th style="padding: 0.5rem;">US Viewers</th>
+          <th style="padding: 0.5rem; text-align: right;">Millions</th>
+          <th style="padding: 0.5rem; text-align: right;">IMDb</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for ep in episodes %}
+        <tr class="episode-row" onclick="window.location.href='/episodes/{{ ep.episode_id }}'">
+          <td class="episode-cell-num">
+            {% if ep.season_viewer_rank == 1 and sort == 'highest' %}
+            <span style="background-color: var(--accent-primary); color: #fff; padding: 2px 6px; border-radius: 2px;">
+              {{ '%02d' % ep.episode_no }}
+            </span>
+            {% else %}
+              {{ '%02d' % ep.episode_no }}
+            {% endif %}
+          </td>
+          <td class="episode-cell-info">
+            <div class="ep-title">{{ ep.title }}</div>
+            <div class="ep-date">{{ ep.air_date }}</div>
+          </td>
+          <td class="episode-cell-bar">
+            <div class="viewers-progress-track">
+              <div class="viewers-progress-fill" style="width: {{ (ep.us_viewers_m / max_viewers) * 100 }}%;"></div>
+            </div>
+          </td>
+          <td class="episode-cell-metrics" style="font-weight: 600;">
+            {{ ep.us_viewers_m }}M
+          </td>
+          <td class="episode-cell-metrics" style="font-weight: 700; color: {% if ep.imdb_rating >= 9.0 %}var(--accent-primary){% else %}inherit{% endif %};">
+            {{ ep.imdb_rating }}
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <!-- RIGHT: ANALYTICS RAIL -->
+  <aside class="analytics-rail">
+    <!-- Bar Chart -->
+    <div class="chart-card">
+      <div class="chart-title">US viewers by episode</div>
+      <div class="chart-subtitle">Lava marks the top rated episode</div>
+      
+      <div class="bar-chart-container">
+        {% for bar in chart_bars %}
+        <div class="chart-col {% if bar.is_top_rated %}top-rated{% endif %}" 
+             data-ep-id="{{ bar.episode_id }}"
+             title="Ep {{ bar.episode_no }}: {{ bar.title }} · {{ bar.viewers }}M · {{ bar.rating }} IMDb"
+             style="height: {{ bar.height_pct }}%;">
+        </div>
+        {% endfor %}
+      </div>
+
+      <div class="lava-caption">
+        <span style="display: inline-block; width: 8px; height: 8px; background-color: var(--accent-primary); border-radius: 1px; margin-right: 4px;"></span>
+        Lava marks the top rated episode
+      </div>
+    </div>
+
+    <!-- Season Average Card -->
+    <div class="stat-highlight-box">
+      <div style="font-size: 0.78rem; text-transform: uppercase; font-weight: 700; margin-bottom: 0.5rem; opacity: 0.85;">
+        Season {{ selected_season.season_no }} Average
+      </div>
+      <div class="stat-highlight-value">{{ selected_season.avg_viewers_m }}M</div>
+      <div class="stat-highlight-desc">viewers · #{{ selected_season.rank_us_shows }} among US television shows that season</div>
+    </div>
+
+    <!-- Top Rated & Most Watched Cards -->
+    {% if top_rated_ep %}
+    <div class="chart-card">
+      <div style="font-size: 0.72rem; text-transform: uppercase; color: var(--text-muted); font-weight: 700; margin-bottom: 0.25rem;">
+        Top rated this season
+      </div>
+      <div style="font-weight: 700; font-size: 1rem; margin-bottom: 0.2rem;">
+        <a href="/episodes/{{ top_rated_ep.episode_id }}">{{ top_rated_ep.title }}</a>
+      </div>
+      <div style="font-size: 0.85rem; color: var(--accent-primary); font-weight: 600;">
+        {{ top_rated_ep.imdb_rating }} on IMDb
+      </div>
+    </div>
+    {% endif %}
+
+    {% if most_watched_ep %}
+    <div class="chart-card">
+      <div style="font-size: 0.72rem; text-transform: uppercase; color: var(--text-muted); font-weight: 700; margin-bottom: 0.25rem;">
+        Most watched this season
+      </div>
+      <div style="font-weight: 700; font-size: 1rem; margin-bottom: 0.2rem;">
+        <a href="/episodes/{{ most_watched_ep.episode_id }}">{{ most_watched_ep.title }}</a>
+      </div>
+      <div style="font-size: 0.85rem; color: var(--text-secondary); font-weight: 600;">
+        {{ most_watched_ep.us_viewers_m }}M viewers
+      </div>
+    </div>
+    {% endif %}
+  </aside>
+</div>
+{% endblock %}

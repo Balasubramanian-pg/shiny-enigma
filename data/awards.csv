@@ -1,0 +1,13 @@
+award_id,show_id,season_no,episode_id,year,award_body,category,nominee,character_id,result
+aw_01,the_mentalist,1,tm_s01e01,2009,People's Choice Awards,Favorite New TV Drama,The Mentalist,,Won
+aw_02,the_mentalist,1,tm_s01e23,2009,Primetime Emmy Awards,Outstanding Lead Actor in a Drama Series,Simon Baker,patrick_jane,Nominated
+aw_03,the_mentalist,2,tm_s02e08,2010,Golden Globe Awards,Best Performance by an Actor in a Television Series - Drama,Simon Baker,patrick_jane,Nominated
+aw_04,the_mentalist,2,tm_s02e23,2010,Screen Actors Guild Awards,Outstanding Performance by a Male Actor in a Drama Series,Simon Baker,patrick_jane,Nominated
+aw_05,the_mentalist,2,tm_s02e01,2010,Television Critics Association Awards,Outstanding New Program,The Mentalist,,Nominated
+aw_06,the_mentalist,3,tm_s03e24,2011,People's Choice Awards,Favorite TV Crime Drama,The Mentalist,,Nominated
+aw_07,the_mentalist,4,tm_s04e24,2012,ASCAP Film and Television Music Awards,Top Television Series,Blake Neely,,Won
+aw_08,the_mentalist,5,tm_s05e22,2013,People's Choice Awards,Favorite TV Crime Drama,The Mentalist,,Nominated
+aw_09,the_mentalist,6,tm_s06e08,2014,ASCAP Film and Television Music Awards,Top Television Series,Blake Neely,,Won
+aw_10,the_mentalist,6,tm_s06e08,2014,Prism Awards,Drama Series Episode,Chris Long & Bruno Heller,,Won
+aw_11,the_mentalist,7,tm_s07e13,2015,People's Choice Awards,Favorite TV Crime Drama,The Mentalist,,Nominated
+aw_12,the_mentalist,7,tm_s07e13,2015,Crime Thriller Awards UK,Best International TV Drama,The Mentalist,,Won

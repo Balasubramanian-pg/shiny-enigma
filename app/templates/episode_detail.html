@@ -1,0 +1,136 @@
+{% extends "base.html" %}
+
+{% block content %}
+<!-- BREADCRUMBS -->
+<div style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 1.25rem;">
+  <a href="/episodes">Episodes</a> / 
+  <a href="/episodes?season={{ episode.season_no }}">Season {{ episode.season_no }}</a> / 
+  Episode {{ episode.episode_no }}
+</div>
+
+<!-- HERO BANNER -->
+<div style="display: grid; grid-template-columns: 280px 1fr; background-color: var(--bg-surface); border: 1px solid var(--border-subtle); margin-bottom: 1.75rem; overflow: hidden;">
+  <!-- Red Block -->
+  <div style="background-color: var(--accent-primary); color: #FFFFFF; padding: 2rem 1.5rem; display: flex; flex-direction: column; justify-content: space-between; position: relative;">
+    <div>
+      <div style="font-size: 0.72rem; text-transform: uppercase; font-weight: 700; letter-spacing: 0.08em; opacity: 0.9;">
+        Season {{ episode.season_no }} · Episode {{ episode.episode_no }} · No. {{ episode.overall_no }} overall
+      </div>
+      <div style="font-size: 3.2rem; font-weight: 800; line-height: 1.1; margin-top: 1rem;">
+        S{{ episode.season_no }} E{{ episode.episode_no }}
+      </div>
+    </div>
+    <div style="font-size: 0.75rem; opacity: 0.8; font-style: italic;">
+      The Mentalist Archive
+    </div>
+  </div>
+
+  <!-- Right Details -->
+  <div style="padding: 2.5rem 2rem;">
+    <h1 style="font-size: 2.4rem; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 1rem;">
+      {{ episode.title }}
+    </h1>
+    <p style="font-size: 0.95rem; color: var(--text-secondary); line-height: 1.6; max-width: 650px;">
+      {{ episode.synopsis }}
+    </p>
+  </div>
+</div>
+
+<!-- 4 PERFORMANCE METRIC CARDS -->
+<div class="kpi-grid">
+  <div class="kpi-card">
+    <div class="kpi-value" style="color: var(--accent-primary);">{{ episode.imdb_rating }}</div>
+    <div class="kpi-label">IMDb rating · {{ '{:,}'.format(episode.imdb_votes) }} votes</div>
+  </div>
+  <div class="kpi-card">
+    <div class="kpi-value">{{ episode.us_viewers_m }}M</div>
+    <div class="kpi-label">US viewers</div>
+  </div>
+  <div class="kpi-card">
+    <div class="kpi-value">{{ episode.season_viewer_rank }} of {{ season_episodes_count }}</div>
+    <div class="kpi-label">Season {{ episode.season_no }} by viewers</div>
+  </div>
+  <div class="kpi-card">
+    <div class="kpi-value" style="font-size: 1.6rem; padding-top: 0.4rem;">{{ episode.air_date }}</div>
+    <div class="kpi-label">First aired on {{ episode.network }}</div>
+  </div>
+</div>
+
+<!-- INTERACTIVE SEASON BAR CHART & CREDITS SPLIT -->
+<div style="display: grid; grid-template-columns: 2fr 1fr; gap: 2rem; background-color: var(--bg-surface); border: 1px solid var(--border-subtle); padding: 2rem; margin-bottom: 2rem;">
+  <div>
+    <div style="font-size: 1.1rem; font-weight: 700; margin-bottom: 0.25rem;">
+      Season {{ episode.season_no }} viewers
+    </div>
+    <div style="font-size: 0.78rem; color: var(--text-muted); margin-bottom: 1.5rem;">
+      US viewers per episode (millions). Select a bar to open it.
+    </div>
+
+    <div class="bar-chart-container" style="height: 180px;">
+      {% for bar in chart_bars %}
+      <div class="chart-col {% if bar.is_current %}active-ep{% endif %}"
+           data-ep-id="{{ bar.episode_id }}"
+           title="Episode {{ bar.episode_no }}: {{ bar.title }} ({{ bar.viewers }}M, {{ bar.rating }} IMDb)"
+           style="height: {{ bar.height_pct }}%;">
+      </div>
+      {% endfor %}
+    </div>
+
+    <div style="display: flex; justify-content: space-between; font-size: 0.72rem; color: var(--text-muted);">
+      <span>Ep 1</span>
+      <span>Ep {{ season_episodes_count }}</span>
+    </div>
+  </div>
+
+  <div style="border-left: 1px solid var(--border-subtle); padding-left: 2rem;">
+    <h3 style="font-size: 1.1rem; font-weight: 700; margin-bottom: 1.25rem;">Credits</h3>
+    
+    <div style="margin-bottom: 1rem;">
+      <div style="font-size: 0.72rem; text-transform: uppercase; color: var(--text-muted); font-weight: 600;">Directed by</div>
+      <div style="font-size: 0.95rem; font-weight: 600;">{{ episode.directed_by }}</div>
+    </div>
+
+    <div style="margin-bottom: 1rem;">
+      <div style="font-size: 0.72rem; text-transform: uppercase; color: var(--text-muted); font-weight: 600;">Written by</div>
+      <div style="font-size: 0.95rem; font-weight: 600;">{{ episode.written_by }}</div>
+    </div>
+
+    <div>
+      <div style="font-size: 0.72rem; text-transform: uppercase; color: var(--text-muted); font-weight: 600;">Network</div>
+      <div style="font-size: 0.95rem; font-weight: 600;">{{ episode.network }}</div>
+    </div>
+  </div>
+</div>
+
+<!-- COMPARE CTA -->
+<div style="margin-bottom: 2rem;">
+  <a href="/compare?ep1={{ episode.episode_id }}" style="font-size: 0.9rem; font-weight: 700; color: var(--accent-primary);">
+    Compare this episode with another →
+  </a>
+</div>
+
+<!-- PREVIOUS / NEXT EPISODE CARDS -->
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+  {% if prev_ep %}
+  <a href="/episodes/{{ prev_ep.episode_id }}" style="background-color: var(--bg-surface); border: 1px solid var(--border-subtle); padding: 1.5rem; border-radius: 2px;">
+    <div style="font-size: 0.72rem; text-transform: uppercase; color: var(--text-muted); font-weight: 700; margin-bottom: 0.25rem;">
+      Previous · S{{ prev_ep.season_no }} E{{ prev_ep.episode_no }}
+    </div>
+    <div style="font-size: 1.1rem; font-weight: 700; margin-bottom: 0.25rem;">{{ prev_ep.title }}</div>
+    <div style="font-size: 0.8rem; color: var(--text-muted);">{{ prev_ep.us_viewers_m }}M viewers</div>
+  </a>
+  {% else %}
+  <div></div>
+  {% endif %}
+
+  {% if next_ep %}
+  <a href="/episodes/{{ next_ep.episode_id }}" style="background-color: #121316; color: #FFFFFF; padding: 1.5rem; border-radius: 2px; text-align: right;">
+    <div style="font-size: 0.72rem; text-transform: uppercase; color: #A0A4AE; font-weight: 700; margin-bottom: 0.25rem;">
+      Next · S{{ next_ep.season_no }} E{{ next_ep.episode_no }}
+    </div>
+    <div style="font-size: 1.1rem; font-weight: 700; margin-bottom: 0.25rem;">{{ next_ep.title }}</div>
+    <div style="font-size: 0.8rem; color: #A0A4AE;">{{ next_ep.us_viewers_m }}M viewers</div>
+  </a>
+  {% endif %}
+</div>
+{% endblock %}

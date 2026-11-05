@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div style="margin-bottom: 2rem;">
+  <div style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0.25rem;">Pick any two of the 151 episodes</div>
+  <h1 style="font-size: 2.2rem; font-weight: 700; letter-spacing: -0.02em;">Compare episodes</h1>
+</div>
+
+<!-- DUAL DROPDOWN SELECTORS -->
+<div class="compare-header-selectors">
+  <select id="compareEp1" class="compare-select">
+    {% for e in all_episodes %}
+    <option value="{{ e.episode_id }}" {% if e.episode_id == ep1.episode_id %}selected{% endif %}>
+      S{{ e.season_no }} E{{ e.episode_no }} · {{ e.title }}
+    </option>
+    {% endfor %}
+  </select>
+
+  <span class="vs-badge">VS</span>
+
+  <select id="compareEp2" class="compare-select">
+    {% for e in all_episodes %}
+    <option value="{{ e.episode_id }}" {% if e.episode_id == ep2.episode_id %}selected{% endif %}>
+      S{{ e.season_no }} E{{ e.episode_no }} · {{ e.title }}
+    </option>
+    {% endfor %}
+  </select>
+</div>
+
+<!-- SIDE BY SIDE HERO CARDS -->
+<div class="compare-cards-row">
+  <div class="compare-hero-card left-card">
+    <div style="font-size: 0.72rem; text-transform: uppercase; font-weight: 700; letter-spacing: 0.08em; opacity: 0.9; margin-bottom: 0.5rem;">
+      S{{ ep1.season_no }} E{{ ep1.episode_no }} · {{ ep1.air_date }}
+    </div>
+    <div style="font-size: 1.8rem; font-weight: 700; margin-bottom: 0.75rem;">
+      {{ ep1.title }}
+    </div>
+    <div style="font-size: 0.85rem; line-height: 1.5; opacity: 0.95;">
+      {{ ep1.synopsis }}
+    </div>
+  </div>
+
+  <div class="compare-hero-card right-card">
+    <div style="font-size: 0.72rem; text-transform: uppercase; font-weight: 700; letter-spacing: 0.08em; color: #A0A4AE; margin-bottom: 0.5rem;">
+      S{{ ep2.season_no }} E{{ ep2.episode_no }} · {{ ep2.air_date }}
+    </div>
+    <div style="font-size: 1.8rem; font-weight: 700; margin-bottom: 0.75rem;">
+      {{ ep2.title }}
+    </div>
+    <div style="font-size: 0.85rem; line-height: 1.5; color: #E2E4E9;">
+      {{ ep2.synopsis }}
+    </div>
+  </div>
+</div>
+
+<!-- COMPARATIVE SCORECARD TABLE -->
+<table class="scorecard-table">
+  <tbody>
+    {% for row in scorecard %}
+    <tr class="scorecard-row">
+      <td class="scorecard-cell val-left {% if row.winner == 1 %}winner-val{% endif %}">
+        {{ row.val1 }}
+      </td>
+      <td class="scorecard-cell metric-center">
+        {{ row.label }}
+      </td>
+      <td class="scorecard-cell val-right {% if row.winner == 2 %}winner-val{% endif %}">
+        {{ row.val2 }}
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

@@ -1,0 +1,1022 @@
+/* ==========================================================================
+   THE MENTALIST EXPLORER - DESIGN SYSTEM & STYLESHEET
+   Swiss International Typographic Style with Red John Blood Red Accent
+   ========================================================================== */
+
+:root {
+  /* Light Palette (Warm Editorial Linen / Ivory) */
+  --bg-canvas: #FAF8F5;
+  --bg-surface: #FFFFFF;
+  --bg-subtle: #F0EDE8;
+  --bg-elevated: #E8E4DD;
+  --sidebar-bg: #F3EFE9;
+  
+  --text-primary: #121316;
+  --text-secondary: #5A5D64;
+  --text-muted: #8E9199;
+  
+  /* The Mentalist Signature Red John Accent */
+  --accent-primary: #C8102E;      /* Crimson Blood Red */
+  --accent-hover: #9E0B22;
+  --accent-subtle: rgba(200, 16, 46, 0.08);
+  --accent-lava: #D91438;
+  
+  --border-subtle: #E5E1D8;
+  --border-strong: #121316;
+  
+  --shadow-subtle: 0 1px 3px rgba(0, 0, 0, 0.04);
+  --shadow-card: 0 4px 12px rgba(0, 0, 0, 0.05);
+
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-serif: 'Didot', 'Bodoni MT', 'Playfair Display', Georgia, serif;
+  --font-mono: ui-monospace, 'JetBrains Mono', 'SFMono-Regular', Menlo, monospace;
+}
+
+[data-theme="dark"] {
+  /* Dark Palette (Obsidian / CBI Night Slate) */
+  --bg-canvas: #0E1013;
+  --bg-surface: #16181D;
+  --bg-subtle: #1F2229;
+  --bg-elevated: #2A2E38;
+  --sidebar-bg: #13151A;
+  
+  --text-primary: #F4F5F7;
+  --text-secondary: #9DA3AE;
+  --text-muted: #666C77;
+  
+  --accent-primary: #E01A3B;
+  --accent-hover: #FF2E50;
+  --accent-subtle: rgba(224, 26, 59, 0.15);
+  --accent-lava: #FF2E50;
+  
+  --border-subtle: #242832;
+  --border-strong: #F4F5F7;
+  
+  --shadow-subtle: 0 1px 3px rgba(0, 0, 0, 0.3);
+  --shadow-card: 0 4px 14px rgba(0, 0, 0, 0.4);
+}
+
+/* --------------------------------------------------------------------------
+   BASE RESETS & GLOBAL TYPOGRAPHY
+   -------------------------------------------------------------------------- */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  transition: background-color 0.25s ease, border-color 0.25s ease, color 0.15s ease;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--bg-canvas);
+  color: var(--text-primary);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* App Shell Layout */
+.app-layout {
+  display: flex;
+  min-height: 100vh;
+}
+
+/* --------------------------------------------------------------------------
+   SIDEBAR NAVIGATION
+   -------------------------------------------------------------------------- */
+.sidebar {
+  width: 140px;
+  background-color: var(--sidebar-bg);
+  border-right: 1px solid var(--border-subtle);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 1.25rem 0.75rem;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  z-index: 50;
+}
+
+.sidebar-header {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 1.5rem;
+}
+
+.sidebar-toggle {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  padding: 0.25rem;
+}
+
+.sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.6rem 0.75rem;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+
+.nav-item:hover {
+  background-color: var(--bg-subtle);
+  color: var(--text-primary);
+}
+
+.nav-item.active {
+  background-color: var(--bg-surface);
+  color: var(--accent-primary);
+  font-weight: 600;
+  box-shadow: var(--shadow-subtle);
+}
+
+.nav-item svg {
+  width: 16px;
+  height: 16px;
+  stroke-width: 2;
+}
+
+.sidebar-footer {
+  font-size: 0.68rem;
+  color: var(--text-muted);
+  line-height: 1.3;
+  padding: 0.5rem;
+  border-top: 1px solid var(--border-subtle);
+}
+
+.sidebar-footer a {
+  text-decoration: underline;
+}
+
+/* --------------------------------------------------------------------------
+   MAIN CONTENT AREA & TOP BAR
+   -------------------------------------------------------------------------- */
+.main-wrapper {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.85rem 2rem;
+  background-color: var(--bg-canvas);
+  border-bottom: 1px solid var(--border-subtle);
+  position: sticky;
+  top: 0;
+  z-index: 40;
+}
+
+.search-box {
+  display: flex;
+  align-items: center;
+  max-width: 480px;
+  flex: 1;
+}
+
+.search-input {
+  flex: 1;
+  background-color: var(--bg-subtle);
+  border: 1px solid transparent;
+  padding: 0.55rem 0.9rem;
+  font-size: 0.85rem;
+  color: var(--text-primary);
+  border-radius: 2px 0 0 2px;
+  outline: none;
+}
+
+.search-input:focus {
+  border-color: var(--text-muted);
+  background-color: var(--bg-surface);
+}
+
+.search-btn {
+  background-color: var(--border-strong);
+  color: var(--bg-canvas);
+  border: none;
+  padding: 0.55rem 1.1rem;
+  font-size: 0.82rem;
+  font-weight: 600;
+  border-radius: 0 2px 2px 0;
+  cursor: pointer;
+}
+
+.top-actions {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.theme-toggle-btn {
+  background-color: var(--bg-subtle);
+  border: 1px solid var(--border-subtle);
+  width: 36px;
+  height: 36px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--text-primary);
+}
+
+.brand-logo {
+  display: flex;
+  align-items: baseline;
+  gap: 0.25rem;
+  font-size: 1.35rem;
+  cursor: pointer;
+  user-select: none;
+}
+
+.brand-sans {
+  font-weight: 300;
+  letter-spacing: 0.12em;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  color: var(--text-primary);
+}
+
+.brand-serif {
+  font-family: var(--font-serif);
+  font-weight: 700;
+  font-style: italic;
+  font-size: 1.45rem;
+  color: var(--accent-primary);
+}
+
+.page-container {
+  padding: 2rem;
+  max-width: 1240px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+/* --------------------------------------------------------------------------
+   HERO & BENTO METRIC CARDS
+   -------------------------------------------------------------------------- */
+.hero-card {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: 2rem;
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  padding: 2.5rem;
+  margin-bottom: 2rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-eyebrow {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent-primary);
+  margin-bottom: 0.75rem;
+}
+
+.hero-title {
+  font-size: 2.4rem;
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  margin-bottom: 1rem;
+}
+
+.hero-desc {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin-bottom: 1.8rem;
+  max-width: 500px;
+}
+
+.hero-actions {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.btn-primary {
+  background-color: var(--accent-primary);
+  color: #FFFFFF;
+  padding: 0.7rem 1.4rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  border-radius: 2px;
+  display: inline-block;
+  cursor: pointer;
+}
+
+.btn-primary:hover {
+  background-color: var(--accent-hover);
+}
+
+.btn-secondary {
+  background-color: #111111;
+  color: #FFFFFF;
+  padding: 0.7rem 1.4rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  border-radius: 2px;
+  display: inline-block;
+  cursor: pointer;
+}
+
+.btn-secondary:hover {
+  background-color: #262626;
+}
+
+/* Interactive Cast Visual in Hero */
+.hero-visual {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--border-subtle);
+  background: linear-gradient(135deg, rgba(200, 16, 46, 0.05), rgba(18, 19, 22, 0.05));
+  min-height: 280px;
+  overflow: hidden;
+}
+
+.cast-stage {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 280px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cast-tag {
+  position: absolute;
+  background-color: rgba(18, 19, 22, 0.9);
+  color: #FFFFFF;
+  padding: 0.25rem 0.55rem;
+  font-size: 0.72rem;
+  font-weight: 600;
+  border-radius: 2px;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  transition: transform 0.15s ease, background-color 0.15s ease;
+}
+
+.cast-tag:hover {
+  background-color: var(--accent-primary);
+  transform: scale(1.08);
+}
+
+/* 4-KPI Metric Bento Bar */
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.25rem;
+  margin-bottom: 2.5rem;
+}
+
+.kpi-card {
+  background-color: var(--bg-subtle);
+  border: 1px solid var(--border-subtle);
+  padding: 1.5rem 1.25rem;
+}
+
+.kpi-value {
+  font-size: 2.2rem;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: var(--text-primary);
+  line-height: 1;
+  margin-bottom: 0.5rem;
+}
+
+.kpi-label {
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+  line-height: 1.3;
+}
+
+/* --------------------------------------------------------------------------
+   SEASONS MATRIX & FLIP/SPARKLINE CARDS
+   -------------------------------------------------------------------------- */
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 1.25rem;
+}
+
+.section-title {
+  font-size: 1.4rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.section-link {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--accent-primary);
+}
+
+.seasons-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.85rem;
+  margin-bottom: 2.5rem;
+}
+
+.season-card {
+  background-color: #121316;
+  color: #FFFFFF;
+  padding: 1.2rem;
+  min-height: 155px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border-radius: 2px;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.season-card-num {
+  font-size: 1.8rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+
+.sparkline-row {
+  display: flex;
+  align-items: flex-end;
+  gap: 2px;
+  height: 32px;
+  margin: 0.75rem 0;
+}
+
+.sparkline-bar {
+  flex: 1;
+  background-color: var(--accent-primary);
+  border-radius: 1px 1px 0 0;
+}
+
+.season-card-meta {
+  font-size: 0.72rem;
+  color: #A0A4AE;
+  display: flex;
+  justify-content: space-between;
+}
+
+/* Hover flip / synopsis reveal */
+.season-synopsis-overlay {
+  position: absolute;
+  inset: 0;
+  background-color: #121316;
+  color: #E2E4E9;
+  padding: 1.1rem;
+  font-size: 0.78rem;
+  line-height: 1.45;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+  display: flex;
+  align-items: center;
+}
+
+.season-card:hover .season-synopsis-overlay {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.season-summary-card {
+  background-color: var(--accent-primary);
+  color: #FFFFFF;
+  padding: 1.2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border-radius: 2px;
+}
+
+.season-summary-card .big-count {
+  font-size: 2.4rem;
+  font-weight: 700;
+}
+
+/* --------------------------------------------------------------------------
+   MILESTONES STRIP
+   -------------------------------------------------------------------------- */
+.milestones-strip {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+  margin-bottom: 2.5rem;
+}
+
+.milestone-item {
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  padding: 1.1rem;
+}
+
+.milestone-label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--accent-primary);
+  margin-bottom: 0.4rem;
+}
+
+.milestone-title {
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: 0.25rem;
+}
+
+.milestone-sub {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+/* --------------------------------------------------------------------------
+   EPISODES LIST & CHARTS
+   -------------------------------------------------------------------------- */
+.season-tabs {
+  display: flex;
+  gap: 0.4rem;
+  margin-bottom: 1.8rem;
+  border-bottom: 1px solid var(--border-subtle);
+  padding-bottom: 0.5rem;
+  overflow-x: auto;
+}
+
+.season-tab {
+  padding: 0.55rem 1rem;
+  font-size: 0.82rem;
+  font-weight: 600;
+  background-color: var(--bg-subtle);
+  color: var(--text-secondary);
+  border-radius: 2px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.season-tab.active {
+  background-color: var(--accent-primary);
+  color: #FFFFFF;
+}
+
+.episodes-split-layout {
+  display: grid;
+  grid-template-columns: 1.6fr 1fr;
+  gap: 2rem;
+}
+
+.episode-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.episode-row {
+  border-bottom: 1px solid var(--border-subtle);
+  cursor: pointer;
+}
+
+.episode-row:hover {
+  background-color: var(--bg-subtle);
+}
+
+.episode-cell-num {
+  width: 45px;
+  font-weight: 700;
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  padding: 0.9rem 0.5rem;
+}
+
+.episode-cell-info {
+  padding: 0.9rem 0.5rem;
+}
+
+.ep-title {
+  font-weight: 600;
+  font-size: 0.92rem;
+}
+
+.ep-date {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.episode-cell-bar {
+  width: 130px;
+  padding: 0.9rem 0.5rem;
+}
+
+.viewers-progress-track {
+  height: 6px;
+  background-color: var(--border-subtle);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.viewers-progress-fill {
+  height: 100%;
+  background-color: var(--border-strong);
+}
+
+.episode-cell-metrics {
+  text-align: right;
+  padding: 0.9rem 0.5rem;
+  font-size: 0.85rem;
+}
+
+/* Analytics Rail */
+.analytics-rail {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.chart-card {
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  padding: 1.5rem;
+}
+
+.chart-title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  margin-bottom: 0.25rem;
+}
+
+.chart-subtitle {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-bottom: 1.25rem;
+}
+
+.bar-chart-container {
+  display: flex;
+  align-items: flex-end;
+  gap: 4px;
+  height: 140px;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--border-subtle);
+  margin-bottom: 0.75rem;
+}
+
+.chart-col {
+  flex: 1;
+  background-color: var(--bg-elevated);
+  border-radius: 2px 2px 0 0;
+  cursor: pointer;
+  position: relative;
+  transition: background-color 0.15s ease;
+}
+
+.chart-col:hover {
+  background-color: var(--text-secondary);
+}
+
+.chart-col.top-rated,
+.chart-col.active-ep {
+  background-color: var(--accent-primary) !important;
+}
+
+.lava-caption {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+}
+
+/* Stat Box */
+.stat-highlight-box {
+  background-color: var(--accent-primary);
+  color: #FFFFFF;
+  padding: 1.5rem;
+  border-radius: 2px;
+}
+
+.stat-highlight-value {
+  font-size: 2.2rem;
+  font-weight: 700;
+  margin-bottom: 0.25rem;
+}
+
+.stat-highlight-desc {
+  font-size: 0.82rem;
+  opacity: 0.9;
+}
+
+/* --------------------------------------------------------------------------
+   HEAD-TO-HEAD COMPARISON MATRIX
+   -------------------------------------------------------------------------- */
+.compare-header-selectors {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.compare-select {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-primary);
+  font-size: 0.9rem;
+  font-weight: 600;
+  border-radius: 2px;
+  outline: none;
+}
+
+.vs-badge {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--text-muted);
+}
+
+.compare-cards-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.compare-hero-card {
+  padding: 2rem;
+  color: #FFFFFF;
+  border-radius: 2px;
+}
+
+.compare-hero-card.left-card {
+  background-color: var(--accent-primary);
+}
+
+.compare-hero-card.right-card {
+  background-color: #121316;
+}
+
+.scorecard-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+}
+
+.scorecard-row {
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.scorecard-cell {
+  padding: 1rem 1.5rem;
+  font-size: 0.95rem;
+}
+
+.scorecard-cell.val-left {
+  text-align: left;
+  width: 35%;
+  font-weight: 600;
+}
+
+.scorecard-cell.metric-center {
+  text-align: center;
+  width: 30%;
+  font-size: 0.82rem;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  letter-spacing: 0.05em;
+}
+
+.scorecard-cell.val-right {
+  text-align: right;
+  width: 35%;
+  font-weight: 600;
+}
+
+.winner-val {
+  color: var(--accent-primary) !important;
+  font-weight: 700;
+}
+
+/* --------------------------------------------------------------------------
+   CHARACTERS HIERARCHY / FAMILY TREE
+   -------------------------------------------------------------------------- */
+.household-block {
+  margin-bottom: 3rem;
+}
+
+.household-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-bottom: 1.25rem;
+  border-bottom: 2px solid var(--border-strong);
+  padding-bottom: 0.4rem;
+}
+
+.characters-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 1.5rem;
+}
+
+.character-card {
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  overflow: hidden;
+  border-radius: 2px;
+}
+
+.char-img-box {
+  width: 100%;
+  height: 220px;
+  background: linear-gradient(135deg, var(--bg-subtle), var(--bg-elevated));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.5rem;
+  font-family: var(--font-serif);
+  color: var(--text-muted);
+  position: relative;
+}
+
+.char-body {
+  padding: 1.25rem;
+}
+
+.char-name {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: 0.2rem;
+}
+
+.char-actor {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  margin-bottom: 0.5rem;
+}
+
+.char-seasons {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--accent-primary);
+  margin-bottom: 0.75rem;
+}
+
+.char-bio {
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+/* --------------------------------------------------------------------------
+   ABOUT SCREEN & ER DIAGRAM
+   -------------------------------------------------------------------------- */
+.architecture-banner {
+  background-color: #121316;
+  color: #FFFFFF;
+  padding: 1.5rem 2rem;
+  border-radius: 2px;
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  margin-bottom: 2rem;
+}
+
+.architecture-tiers-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-bottom: 2.5rem;
+}
+
+.arch-tier-item {
+  display: grid;
+  grid-template-columns: 60px 180px 1fr;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  background-color: var(--bg-subtle);
+  border: 1px solid var(--border-subtle);
+}
+
+.tier-icon-box {
+  width: 38px;
+  height: 38px;
+  background-color: var(--accent-primary);
+  color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 2px;
+}
+
+.tier-title {
+  font-weight: 700;
+  font-size: 0.95rem;
+}
+
+.tier-sub {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.tier-content {
+  font-size: 0.88rem;
+  font-weight: 500;
+}
+
+/* ER Model Visual */
+.er-diagram-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  margin-bottom: 2.5rem;
+}
+
+.er-table-box {
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.er-table-header {
+  background-color: #121316;
+  color: #FFFFFF;
+  padding: 0.6rem 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.er-row-count {
+  font-size: 0.75rem;
+  color: #A0A4AE;
+  font-weight: normal;
+}
+
+.er-table-body {
+  padding: 0.75rem 1rem;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+}
+
+.er-field {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.25rem 0;
+  border-bottom: 1px dashed var(--border-subtle);
+}
+
+.er-pk {
+  color: var(--accent-primary);
+  font-weight: 700;
+}
+
+.er-fk {
+  color: var(--text-muted);
+}
+
+/* Footer Attribution */
+.app-footer {
+  margin-top: 3rem;
+  padding: 1.5rem 0;
+  border-top: 1px solid var(--border-subtle);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.databricks-badge {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--text-primary);
+  font-weight: 600;
+}

@@ -1,0 +1,77 @@
+name: CI & App Test
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  test-and-verify:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Validate Datasets & Schema Integrity
+        run: |
+          python -c "
+          import csv, os
+          tables = ['shows', 'seasons', 'episodes', 'characters', 'season_cast', 'awards']
+          for t in tables:
+              p = os.path.join('data', f'{t}.csv')
+              assert os.path.exists(p), f'Missing {p}'
+              with open(p, 'r', encoding='utf-8') as f:
+                  reader = csv.DictReader(f)
+                  rows = list(reader)
+                  assert len(rows) > 0, f'{t}.csv is empty'
+                  print(f'Validated data/{t}.csv: {len(rows)} rows, columns: {list(rows[0].keys())}')
+          "
+
+      - name: Run Test Suite
+        run: |
+          pytest tests/test_app.py -v
+
+      - name: Smoke Test FastAPI & Uvicorn Server
+        run: |
+          # Start app in background
+          python -m uvicorn app.main:app --host 127.0.0.1 --port 8000 &
+          PID=$!
+          sleep 3
+          
+          # Curl test endpoints
+          curl -f http://127.0.0.1:8000/ || exit 1
+          curl -f http://127.0.0.1:8000/episodes || exit 1
+          curl -f http://127.0.0.1:8000/episodes/tm_s06e08 || exit 1
+          curl -f http://127.0.0.1:8000/compare || exit 1
+          curl -f http://127.0.0.1:8000/characters || exit 1
+          curl -f http://127.0.0.1:8000/awards || exit 1
+          curl -f http://127.0.0.1:8000/about || exit 1
+          curl -f http://127.0.0.1:8000/api/search?q=Jane || exit 1
+
+          echo "All endpoints passed smoke test successfully!"
+          kill $PID
+
+      - name: Archive Databricks App Package
+        uses: actions/upload-artifact@v4
+        with:
+          name: databricks-app-bundle
+          path: |
+            app.yaml
+            requirements.txt
+            app/
+            data/
+            sql/

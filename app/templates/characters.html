@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div style="margin-bottom: 2rem;">
+  <div style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0.25rem;">Law enforcement units, consultants &amp; nemeses</div>
+  <h1 style="font-size: 2.2rem; font-weight: 700; letter-spacing: -0.02em;">Characters</h1>
+</div>
+
+<!-- RELATIONSHIP / ORGANIZATIONAL NOTE -->
+<div style="background-color: var(--bg-surface); border: 1px solid var(--border-subtle); padding: 1.25rem 1.5rem; margin-bottom: 2.5rem; font-size: 0.88rem; color: var(--text-secondary); line-height: 1.6; border-left: 3px solid var(--accent-primary);">
+  Patrick Jane serves as independent consultant to Senior Agent Teresa Lisbon's CBI unit. Agents Cho, Rigsby, and Van Pelt form the core tactical team. Following the dismantling of the CBI in Season 6, Jane and Lisbon join the FBI Austin Field Office under Supervisory Special Agent Dennis Abbott. Red John heads the clandestine law enforcement conspiracy known as the Blake Association.
+</div>
+
+<!-- GROUPED BY HOUSEHOLD / FACTION -->
+{% for household_name, chars in households.items() %}
+<div class="household-block">
+  <div class="household-title">
+    {{ household_name }} <span style="font-size: 0.85rem; font-weight: 400; color: var(--text-muted);">({{ chars|length }} characters)</span>
+  </div>
+
+  <div class="characters-grid">
+    {% for c in chars %}
+    <div class="character-card">
+      <div class="char-img-box">
+        {{ c.name[0] }}
+      </div>
+      <div class="char-body">
+        <div class="char-name">{{ c.name }}</div>
+        <div class="char-actor">Played by {{ c.actor }}</div>
+        <div class="char-seasons">{{ c.seasons_active }}</div>
+        <div class="char-bio">{{ c.bio }}</div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+{% endfor %}
+{% endblock %}

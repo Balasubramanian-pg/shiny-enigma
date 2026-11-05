@@ -1,0 +1,216 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div style="margin-bottom: 2rem;">
+  <div style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0.25rem;">A personal analytical project</div>
+  <h1 style="font-size: 2.2rem; font-weight: 700; letter-spacing: -0.02em;">About</h1>
+</div>
+
+<!-- ABOUT NARRATIVE -->
+<div style="max-width: 850px; margin-bottom: 2.5rem;">
+  <h2 style="font-size: 1.35rem; font-weight: 700; margin-bottom: 0.75rem;">About this app</h2>
+  <p style="font-size: 0.95rem; color: var(--text-secondary); line-height: 1.6; margin-bottom: 1rem;">
+    The Mentalist Explorer covers all 151 episodes of the acclaimed CBS crime drama across 7 seasons, with detailed storylines, US viewership trends, IMDb ratings, character allegiances, and award history. It runs natively as a Databricks App querying Delta tables in Unity Catalog.
+  </p>
+</div>
+
+<!-- HOW IT'S BUILT BANNER -->
+<h2 style="font-size: 1.35rem; font-weight: 700; margin-bottom: 1rem;">How it's built</h2>
+
+<div class="architecture-banner">
+  <div style="background-color: var(--accent-primary); width: 42px; height: 42px; border-radius: 3px; display: flex; align-items: center; justify-content: center;">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+      <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" stroke="#FFF" stroke-width="2"/>
+    </svg>
+  </div>
+  <div>
+    <div style="font-size: 1.2rem; font-weight: 700;">Built on Databricks</div>
+    <div style="font-size: 0.82rem; opacity: 0.85;">Databricks Apps · Unity Catalog · Delta Lake · Serverless SQL Warehouse</div>
+  </div>
+</div>
+
+<p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1.5rem;">
+  Data was loaded once from curated datasets into Unity Catalog. The app reads and caches it into memory when it boots.
+</p>
+
+<!-- 5-TIER ARCHITECTURE FLOW -->
+<div class="architecture-tiers-list">
+  <div class="arch-tier-item">
+    <div class="tier-icon-box">🗂️</div>
+    <div>
+      <div class="tier-title">Browser</div>
+      <div class="tier-sub">What you see</div>
+    </div>
+    <div class="tier-content">6 pages · Chart tooltips · Dark/Light theme wipe</div>
+  </div>
+
+  <div class="arch-tier-item">
+    <div class="tier-icon-box">&lt;/&gt;</div>
+    <div>
+      <div class="tier-title">App</div>
+      <div class="tier-sub">Databricks Apps</div>
+    </div>
+    <div class="tier-content">FastAPI · Jinja templates · Uvicorn ASGI</div>
+  </div>
+
+  <div class="arch-tier-item">
+    <div class="tier-icon-box">⇅</div>
+    <div>
+      <div class="tier-title">Access</div>
+      <div class="tier-sub">How the app reads it</div>
+    </div>
+    <div class="tier-content">SQL warehouse connector · Unity Catalog Files API</div>
+  </div>
+
+  <div class="arch-tier-item">
+    <div class="tier-icon-box">🛢️</div>
+    <div>
+      <div class="tier-title">Storage</div>
+      <div class="tier-sub">Unity Catalog</div>
+    </div>
+    <div class="tier-content">6 Delta tables · Images volume</div>
+  </div>
+
+  <div class="arch-tier-item">
+    <div class="tier-icon-box">📄</div>
+    <div>
+      <div class="tier-title">Sources</div>
+      <div class="tier-sub">Where data came from</div>
+    </div>
+    <div class="tier-content">Wikipedia · IMDb datasets (tt1196946) · Nielsen Ratings</div>
+  </div>
+</div>
+
+<div style="display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--text-muted); margin-bottom: 3rem;">
+  <span>↓ Request Flow</span>
+  <span>Data Return Flow ↑</span>
+</div>
+
+<!-- LIVE DATA MODEL (ER DIAGRAM) -->
+<h2 style="font-size: 1.35rem; font-weight: 700; margin-bottom: 0.5rem;">Data model</h2>
+<p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1.5rem;">
+  Six Delta tables in <code style="font-family: var(--font-mono); background: var(--bg-subtle); padding: 2px 6px; border-radius: 2px;">main.tvshows</code>. Row counts are read live when the app starts.
+</p>
+
+<div class="er-diagram-container">
+  <!-- SHOWS -->
+  <div class="er-table-box">
+    <div class="er-table-header">
+      <span>shows</span>
+      <span class="er-row-count">{{ row_counts.shows }} row</span>
+    </div>
+    <div class="er-table-body">
+      <div class="er-field"><span class="er-pk">show_id (PK)</span><span>STRING</span></div>
+      <div class="er-field"><span>title</span><span>STRING</span></div>
+      <div class="er-field"><span>network</span><span>STRING</span></div>
+      <div class="er-field"><span>first_aired</span><span>DATE</span></div>
+      <div class="er-field"><span>episode_count</span><span>INT</span></div>
+      <div class="er-field" style="color: var(--text-muted);"><span>+ 14 more columns</span></div>
+    </div>
+  </div>
+
+  <!-- SEASONS -->
+  <div class="er-table-box">
+    <div class="er-table-header">
+      <span>seasons</span>
+      <span class="er-row-count">{{ row_counts.seasons }} rows</span>
+    </div>
+    <div class="er-table-body">
+      <div class="er-field"><span class="er-pk">season_no (PK)</span><span>INT</span></div>
+      <div class="er-field"><span class="er-fk">show_id (FK)</span><span>STRING</span></div>
+      <div class="er-field"><span>avg_viewers_m</span><span>DOUBLE</span></div>
+      <div class="er-field"><span>avg_imdb_rating</span><span>DOUBLE</span></div>
+      <div class="er-field"><span class="er-fk">top_rated_episode_id (FK)</span><span>STRING</span></div>
+      <div class="er-field" style="color: var(--text-muted);"><span>+ 7 more columns</span></div>
+    </div>
+  </div>
+
+  <!-- EPISODES -->
+  <div class="er-table-box">
+    <div class="er-table-header">
+      <span>episodes</span>
+      <span class="er-row-count">{{ row_counts.episodes }} rows</span>
+    </div>
+    <div class="er-table-body">
+      <div class="er-field"><span class="er-pk">episode_id (PK)</span><span>STRING</span></div>
+      <div class="er-field"><span class="er-fk">season_no (FK)</span><span>INT</span></div>
+      <div class="er-field"><span>title</span><span>STRING</span></div>
+      <div class="er-field"><span>air_date</span><span>DATE</span></div>
+      <div class="er-field"><span>us_viewers_m</span><span>DOUBLE</span></div>
+      <div class="er-field"><span>imdb_rating</span><span>DOUBLE</span></div>
+      <div class="er-field" style="color: var(--text-muted);"><span>+ 8 more columns</span></div>
+    </div>
+  </div>
+
+  <!-- CHARACTERS -->
+  <div class="er-table-box">
+    <div class="er-table-header">
+      <span>characters</span>
+      <span class="er-row-count">{{ row_counts.characters }} rows</span>
+    </div>
+    <div class="er-table-body">
+      <div class="er-field"><span class="er-pk">character_id (PK)</span><span>STRING</span></div>
+      <div class="er-field"><span class="er-fk">show_id (FK)</span><span>STRING</span></div>
+      <div class="er-field"><span>name</span><span>STRING</span></div>
+      <div class="er-field"><span>actor</span><span>STRING</span></div>
+      <div class="er-field"><span>household</span><span>STRING</span></div>
+      <div class="er-field" style="color: var(--text-muted);"><span>+ 4 more columns</span></div>
+    </div>
+  </div>
+
+  <!-- SEASON_CAST -->
+  <div class="er-table-box">
+    <div class="er-table-header">
+      <span>season_cast</span>
+      <span class="er-row-count">{{ row_counts.season_cast }} rows</span>
+    </div>
+    <div class="er-table-body">
+      <div class="er-field"><span class="er-pk">season_cast_id (PK)</span><span>STRING</span></div>
+      <div class="er-field"><span class="er-fk">character_id (FK)</span><span>STRING</span></div>
+      <div class="er-field"><span class="er-fk">season_no (FK)</span><span>INT</span></div>
+      <div class="er-field"><span>actor</span><span>STRING</span></div>
+      <div class="er-field" style="color: var(--text-muted);"><span>+ 2 more columns</span></div>
+    </div>
+  </div>
+
+  <!-- AWARDS -->
+  <div class="er-table-box">
+    <div class="er-table-header">
+      <span>awards</span>
+      <span class="er-row-count">{{ row_counts.awards }} rows</span>
+    </div>
+    <div class="er-table-body">
+      <div class="er-field"><span class="er-pk">award_id (PK)</span><span>STRING</span></div>
+      <div class="er-field"><span class="er-fk">episode_id (FK)</span><span>STRING</span></div>
+      <div class="er-field"><span>year</span><span>INT</span></div>
+      <div class="er-field"><span>award_body</span><span>STRING</span></div>
+      <div class="er-field"><span>result</span><span>STRING</span></div>
+      <div class="er-field" style="color: var(--text-muted);"><span>+ 3 more columns</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- DATA SOURCES TABLE -->
+<h2 style="font-size: 1.35rem; font-weight: 700; margin-bottom: 1rem;">Data sources</h2>
+
+<table style="width: 100%; border-collapse: collapse; background-color: var(--bg-surface); border: 1px solid var(--border-subtle); margin-bottom: 2rem;">
+  <tbody>
+    <tr style="border-bottom: 1px solid var(--border-subtle);">
+      <td style="padding: 1rem 1.25rem; font-weight: 600;">Episodes, seasons and awards</td>
+      <td style="padding: 1rem 1.25rem; text-align: right; color: var(--accent-primary);">Wikipedia, CC BY-SA 4.0</td>
+    </tr>
+    <tr style="border-bottom: 1px solid var(--border-subtle);">
+      <td style="padding: 1rem 1.25rem; font-weight: 600;">Ratings and votes</td>
+      <td style="padding: 1rem 1.25rem; text-align: right; color: var(--accent-primary);">IMDb non-commercial datasets (tt1196946)</td>
+    </tr>
+    <tr style="border-bottom: 1px solid var(--border-subtle);">
+      <td style="padding: 1rem 1.25rem; font-weight: 600;">US viewers</td>
+      <td style="padding: 1rem 1.25rem; text-align: right; color: var(--text-muted);">Nielsen ratings as reported on CBS press releases</td>
+    </tr>
+    <tr>
+      <td style="padding: 1rem 1.25rem; font-weight: 600;">Last updated</td>
+      <td style="padding: 1rem 1.25rem; text-align: right; color: var(--text-muted);">November 2026</td>
+    </tr>
+  </tbody>
+</table>
+{% endblock %}
